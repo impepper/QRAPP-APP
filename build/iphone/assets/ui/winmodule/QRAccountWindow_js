@@ -1,0 +1,60 @@
+function QRAccountWindow(title){var qrreader=undefined;var qrCodeWindow=undefined;var qrCodeView=undefined;var base_logohtml=(Ti.Platform.osname=='android')?'http://mcms.fuihan.com/mobileWeb/default.html':Ti.Filesystem.resourcesDirectory+'default.html'
+var scanned=false;Ti.include('fnc_string.js');if(Ti.Platform.osname==='iphone'||Ti.Platform.osname==='ipad'){qrreader=require('com.acktie.mobile.ios.qr');}else if(Ti.Platform.osname==='android'){qrreader=require('com.acktie.mobile.android.qr');}
+var win=Ti.UI.createWindow({title:'QRCode Scanner',barColor:'#222',backgroundColor:'black'});win.navBarHidden=(Ti.Platform.osname==='android')?true:false;if(Ti.Platform.osname=='android'){win.navBarHidden=true;}else{var btn_scan=Ti.UI.createButton({title:'Scan'})
+btn_scan.addEventListener('click',function(){win.fireEvent('scan')})
+win.rightNavButton=btn_scan}
+var view_url=Ti.UI.createWebView({backgroundColor:'#333',url:base_logohtml,scalesPageToFit:true});if(Ti.Platform.osname=='android'){view_url.addEventListener('click',function(){win.fireEvent('scan')})}
+win.add(view_url);function switchWebURL(obj_webview,targetURL){obj_webview.animate({opacity:0,duration:200},function(){obj_webview.url=targetURL
+obj_webview.animate({opacity:1,duration:200},function(){hideIndicator()})})}
+function saveScreenShots(qr_link){var imgDataDir=Ti.Filesystem.getApplicationDataDirectory()+Ti.Filesystem.separator+'QRImages'+Ti.Filesystem.separator;var qr_scandate=new Date().getTime()
+var filename=qr_scandate+"_qr.jpg";Ti.Media.takeScreenshot(function(e){var screenshotImage=e.image;var ImageFactory=require('ti.imagefactory');var blob=e.media;var newBlob=ImageFactory.imageTransform(ImageFactory.imageAsCropped(blob,{width:400,height:400,x:0,y:30}),{type:ImageFactory.TRANSFORM_CROP,width:400,height:400},{type:ImageFactory.TRANSFORM_ROUNDEDCORNER,borderSize:6,cornerRadius:20});var bgImage=Ti.Filesystem.getFile(imgDataDir,filename);bgImage.write(newBlob);buildQRDesc(filename,qr_link)})}
+function success(data){win.title='QRCode Scanner'
+if(data!=undefined&&data.data!=undefined){Ti.Media.vibrate();var qrData=data.data;if(Ti.Platform.osname=='iphone'||Ti.Platform.osname=='ipad'){saveScreenShots(qrData);}
+var strHeader=qrData.toString().substr(0,7);var mcmsHeader=qrData.toString().substr(7,15);var mcmsApp=strTrim(qrData.toString().substr(23,200));if(strHeader.toUpperCase()=='HTTP://'){if(Ti.Platform.osname!='android'){switchWebURL(view_url,'')}
+if((mcmsHeader.toUpperCase()=='MCMS.FUIHAN.COM')&&mcmsApp.toString().length>8){var tempappid=Ti.Utils.base64decode(mcmsApp).toString();if(('viewer.'+strTrim(tempappid.toString().substr(9,200)))==Ti.App.Properties.getString('cloud_useremail',''))
+{var Cloud=require('ti.cloud');Cloud.Users.logout(function(e){if(e.success){Ti.App.Properties.removeProperty('cloud_userid')
+Ti.App.Properties.removeProperty('cloud_useremail')
+Ti.App.Properties.removeProperty('cloud_userpassword')
+Ti.App.Properties.removeProperty('cloud_userrole')
+Ti.App.Properties.setBool('auto_login',false)
+Ti.App.Properties.setBool('cloud_Logged',false)
+Ti.App.Properties.setInt('cloud_userrole',5)
+win.fireEvent('ReloadTabs');if(Ti.Platform.osname=='android'){qrCodeView.stop();qrCodeWindow.close();}else{qrCodeView.close();}}else{alert('Sorry, we have account logging problem now. please quit this app and launch again')}})}else{Ti.App.Properties.removeProperty('cloud_userid')
+Ti.App.Properties.removeProperty('cloud_useremail')
+Ti.App.Properties.removeProperty('cloud_userpassword')
+Ti.App.Properties.removeProperty('cloud_userrole')
+Ti.App.Properties.setBool('auto_login',false)
+Ti.App.Properties.setBool('cloud_Logged',false)
+if(tempappid.toString().substr(0,9)=='&content='){ACSLogin(strTrim(tempappid.toString().substr(9,200)))}else{ACSLogin(mcmsApp)}}}else{if(Ti.Platform.osname=='android'){scanned=true;showIndicator('Loading Web Pages')
+var win_url=Ti.UI.createWindow({backgroundColor:'#000',height:'100%',width:'100%'})
+var android_url_view=Ti.UI.createWebView({url:qrData,backgroundColor:'#000',height:'100%',width:'100%'})
+android_url_view.addEventListener('load',function(){hideIndicator()})
+win_url.add(android_url_view)
+win_url.open()}else{win.title='QR - WebPages'
+showIndicator('Loading Web Pages')
+createURL(qrData)}}}else{if(Ti.Platform.osname=='android'){scanned=true;showIndicator('Getting Text')
+var win_url=Ti.UI.createWindow({backgroundColor:'#000',height:'100%',width:'100%'})
+var android_url_view=Ti.UI.createWebView({backgroundColor:'#000',height:'100%',width:'100%'})
+android_url_view.setHtml('<html><body><h2 style="color:#ccc;">'+qrData+'</h2></body></html>')
+win_url.add(android_url_view)
+win_url.open()
+hideIndicator()}else{win.title='QR - Text'
+view_url.setHtml('<html><body><h2 style="color:#ccc;">'+qrData+'</h2></body></html>')
+view_url.show()}}}};function cancel(){view_url.url=base_logohtml};function error(){alert("error");view_url.url=base_logohtml};function scanQRFromCamera(options){qrCodeWindow=Ti.UI.createWindow({backgroundColor:'black',width:'100%',height:'100%',});qrCodeView=qrreader.createQRCodeView(options);var closeButton=Ti.UI.createButton({title:"close",bottom:0,left:0});var lightToggle=Ti.UI.createSwitch({value:false,bottom:0,right:0});closeButton.addEventListener('click',function(){qrCodeView.stop();qrCodeWindow.close();});lightToggle.addEventListener('change',function(){qrCodeView.toggleLight();})
+qrCodeWindow.add(qrCodeView);qrCodeWindow.add(closeButton);if(options.userControlLight!=undefined&&options.userControlLight){qrCodeWindow.add(lightToggle);}
+qrCodeWindow.open();}
+function createURL(urlLink){switchWebURL(view_url,urlLink)}
+function ACSLogin(mcmscode){var Cloud=require('ti.cloud');Ti.API.info('mCMS App ID - '+mcmscode)
+if(!Ti.App.Properties.getBool('cloud_Logged',false)){Cloud.Users.login({login:'viewer.'+mcmscode,password:'viewerInPub'},function(e){if(e.success){var user=e.users[0];Ti.App.Properties.setBool('cloud_Logged',true)
+Ti.App.Properties.setBool('auto_login',true)
+Ti.App.Properties.setString('cloud_userid',user.id)
+Ti.App.Properties.setString('cloud_useremail',user.email)
+Ti.App.Properties.setString('cloud_userpassword','viewerInPub')
+if(Ti.Platform.osname=='android'){Ti.App.Properties.setInt('cloud_userrole',0)
+if((typeof user.role!='undefined')&&(user.role!='')){var userrole=parseInt(user.role.toString())
+if(userrole){Ti.App.Properties.setInt('cloud_userrole',userrole)}}}else{Ti.App.Properties.setInt('cloud_userrole',user.role)}
+win.fireEvent('ReloadTabs');if(Ti.Platform.osname=='android'){qrCodeView.stop();qrCodeWindow.close();}else{qrCodeView.close();}}else{alert('Sorry, Your mCMS Code is not recognizable, please check again.')}});}}
+win.addEventListener('scan',function(){var options={backgroundColor:'blue',width:'100%',height:'100%',top:0,left:0,overlay:{color:"blue",layout:"center",alpha:.75},success:success,cancel:cancel,error:error,continuous:false,};if(Ti.Platform.name=="android"){scanQRFromCamera(options);}else{qrreader.scanQRFromCamera(options);}})
+if(Ti.Platform.osname=='android'){var menu=null;win.addEventListener('open',function(){var activity=win.activity;activity.onCreateOptionsMenu=function(e){menu=e.menu;m1=menu.add({title:'Sacn QRcode',itemId:1,groupId:0,order:0});m1.setIcon("/icons/qrcode.png");m1.addEventListener('click',function(e){if(scanned){qrCodeWindow.close();}
+win.fireEvent('scan')})};});}
+return win;};module.exports=QRAccountWindow;

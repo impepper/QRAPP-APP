@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="home">Home</string>	
+	<string name="settings">Settings</string>
+	<string name="openWindow">Open New Window</string>
+	<string name="newWindow">New Window</string>
+	<string name="USER_NAME">姓名:</string>
+	<string name="USER_EMAIL">郵件:</string>
+	<string name="USER_MOBILE">電話:</string>
+	<string name="USER_ADDRESS">地址:</string>
+	<string name="CreatAccount">建立帳號</string>
+	<string name="LoginAccount">登入</string>
+	<string name="Automatically_Login">自動登入</string>
+	<string name="ReType">再次確認</string>
+	<string name="Password">密碼</string>
+	<string name="E_Mail">電子郵件</string>
+	<string name="Username">使用者名稱</string>
+	<string name="CLOSE_WIN">關閉</string>
+</resources>

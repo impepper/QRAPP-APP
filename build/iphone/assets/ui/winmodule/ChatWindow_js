@@ -1,0 +1,33 @@
+function ChatWindow(tabbed_window,show_navbar,title,chatadmin_id){if(Ti.Platform.osname!='android'){var Cloud=require('ti.cloud');var user;var last_updated;var chatInterval=30000;var SMSView=require('ti.smsview');var buttonBar=Ti.UI.createButtonBar({labels:['Recieve','Empty','Get All','Disable','Enable'],height:30,style:Ti.UI.iPhone.SystemButtonStyle.BAR});var headerView=Ti.UI.createView();headerView.add(buttonBar);var win=Ti.UI.createWindow({orientationModes:[1,2,3,4]});var textArea=SMSView.createView({backgroundColor:'#dae1eb',returnType:SMSView.RETURNKEY_DONE,camButton:true,hasTab:true});win.add(textArea);buttonBar.addEventListener('click',function(e){switch(e.index){case 0:textArea.recieveMessage('Hello World!');break;case 1:textArea.empty();break;case 2:Ti.API.info(textArea.getAllMessages());break;case 3:textArea.sendButtonDisabled=true;break;case 4:textArea.sendButtonDisabled=false;break;}});textArea.addEventListener('click',function(e){if(e.scrollView){textArea.blur();}
+Ti.API.info('Clicked on the scrollview');});textArea.addEventListener('buttonClicked',function(e){var ids=[];var chat_root_user=Ti.App.Properties.getString('chat_root_user','')
+ids.push(chatadmin_id);if(chat_root_user!=''){ids.push(chat_root_user);}
+if((user.id!=chat_root_user)&&(user.id!=chatadmin_id)){ids.push(user.id);}
+Cloud.Chats.create({to_ids:ids.join(','),message:'Say: '+e.value},function(e){if(e.success){for(var i=0;i<e.chats.length;i++){var chat=e.chats[i];var chatids=chat.chat_group.participate_users;textArea.sendMessage(chat.message+'/Group:'+chat.chat_group.id+'/Users:'+chatids.length+"/ID:"+chatids[0].id+' /'+chatids[1].id);last_updated=chat.created_at;}}else{alert('Error:\\n'+
+((e.error&&e.message)||JSON.stringify(e)));}});});textArea.addEventListener('camButtonClicked',function(){var options=Ti.UI.createOptionDialog({options:['Photo Gallery','Cancel'],cancel:1,title:'Send a photo'});options.show();options.addEventListener('click',function(e){if(e.index==0){Ti.Media.openPhotoGallery({success:function(event){Cloud.Photos.create({photo:event.media,photo_sync_sizes:'small_240'},function(e){if(e.success){var photo=e.photos[0];var ids=[];var chat_root_user=Ti.App.Properties.getString('chat_root_user','')
+ids.push(chatadmin_id);if(chat_root_user!=''){ids.push(chat_root_user);}
+if((user.id!=chat_root_user)&&(user.id!=chatadmin_id)){ids.push(user.id);}
+alert(ids.length+':'+ids.join(','));Cloud.Chats.create({to_ids:ids.join(','),message:'sendImage:'+photo.id},function(e){if(e.success){var chat=e.chats[i];var image=Ti.UI.createImageView({image:photo.urls['small_240']});textArea.sendMessage(image.toBlob());last_updated=chat.created_at;}else{alert('Error:\\n'+
+((e.error&&e.message)||JSON.stringify(e)));}});}else{alert('Error:\\n'+
+((e.error&&e.message)||JSON.stringify(e)));}});},mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO]});}});});textArea.addEventListener('messageClicked',function(e){if(e.text){Ti.API.info('Text: '+e.text);}
+if(e.image){Ti.API.info('Image: '+e.image);}
+Ti.API.info('Index: '+e.index);});win.addEventListener('open',function(){Cloud.Users.login({login:Ti.App.Properties.getString('cloud_useremail','defaultui@fuihan.com'),password:Ti.App.Properties.getString('cloud_userpassword','fuihan168')},function(e){if(e.success){user=e.users[0];var ids=[];var chat_root_user=Ti.App.Properties.getString('chat_root_user','')
+ids.push(chatadmin_id);if(chat_root_user!=''){ids.push(chat_root_user);}
+if((user.id!=chat_root_user)&&(user.id!=chatadmin_id)){ids.push(user.id);}
+alert(ids.length+':'+ids.join(','));Cloud.Chats.query({participate_ids:ids.join(','),limit:100,where:{created_at:{"$gte":"2012-01-01T22:53:48+0000"}}},function(e){if(e.success){for(var i=0;i<e.chats.length;i++){var chat=e.chats[i];if(chat.from.id==user.id){if(chat.message.substring(0,10)=='sendImage:'){Cloud.Photos.show({photo_id:chat.message.substring(10)},function(e){if(e.success){var photo=e.photos[0];var image=Ti.UI.createImageView({image:photo.urls['small_240']})
+textArea.sendMessage(image.toBlob());}else{alert('Error:\\n'+
+((e.error&&e.message)||JSON.stringify(e)));}});}else{textArea.sendMessage(chat.message);}}else{if(chat.message.substring(0,10)=='sendImage:'){Cloud.Photos.show({photo_id:chat.message.substring(10)},function(e){if(e.success){var photo=e.photos[0];var image=Ti.UI.createImageView({image:photo.urls['small_240']})
+textArea.recieveMessage(image.toBlob());}else{alert('Error:\\n'+
+((e.error&&e.message)||JSON.stringify(e)));}});}else{textArea.recieveMessage(chat.message);}}
+last_updated=chat.created_at;}}else{alert('Error:\\n'+
+((e.error&&e.message)||JSON.stringify(e)));}});setInterval(function(){var ids=[];var chat_root_user=Ti.App.Properties.getString('chat_root_user','')
+ids.push(chatadmin_id);if(chat_root_user!=''){ids.push(chat_root_user);}
+if((user.id!=chat_root_user)&&(user.id!=chatadmin_id)){ids.push(user.id);}
+Cloud.Chats.query({participate_ids:ids.join(','),where:{created_at:{"$gt":last_updated}}},function(e){if(e.success){for(var i=0;i<e.chats.length;i++){var chat=e.chats[i];if(chat.from.id==user.id){if(chat.message.substring(0,10)=='sendImage:'){Cloud.Photos.show({photo_id:chat.message.substring(10)},function(e){if(e.success){var photo=e.photos[0];var image=Ti.UI.createImageView({image:photo.urls['small_240']})
+textArea.sendMessage(image.toBlob());}else{alert('Error:\\n'+
+((e.error&&e.message)||JSON.stringify(e)));}});}else{textArea.sendMessage(chat.message);}}else{if(chat.message.substring(0,10)=='sendImage:'){Cloud.Photos.show({photo_id:chat.message.substring(10)},function(e){if(e.success){var photo=e.photos[0];var image=Ti.UI.createImageView({image:photo.urls['small_240']})
+textArea.recieveMessage(image.toBlob());}else{alert('Error:\\n'+
+((e.error&&e.message)||JSON.stringify(e)));}});}else{textArea.recieveMessage(chat.message);}}
+last_updated=chat.created_at;}}else{alert('Error:\\n'+
+((e.error&&e.message)||JSON.stringify(e)));}})},chatInterval)}else{alert('Error:\\n'+
+((e.error&&e.message)||JSON.stringify(e)));}});});}else{var win=Ti.UI.createWindow({orientationModes:[1,2,3,4]});var android_not_ready=Ti.UI.createLabel({text:'Sorry, Chatting on Android is still in development, sorry for the inconvience.',font:{fontSize:18}})}
+win.navBarHidden=true;return win};module.exports=ChatWindow;

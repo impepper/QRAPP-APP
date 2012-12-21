@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="home">Home</string>	
+	<string name="settings">Settings</string>
+	<string name="openWindow">Open New Window</string>
+	<string name="newWindow">New Window</string>
+	<string name="USER_NAME">Name:</string>
+	<string name="USER_EMAIL">eMail:</string>
+	<string name="USER_MOBILE">Phone:</string>
+	<string name="USER_ADDRESS">Address:</string>
+	<string name="CreatAccount">Creat Account</string>
+	<string name="LoginAccount">Login</string>
+	<string name="Automatically_Login">Automatically Login</string>
+	<string name="ReType">ReType</string>
+	<string name="Password">Password</string>
+	<string name="E_Mail">E-Mail</string>
+	<string name="Username">Username</string>
+	<string name="CLOSE_WIN">Close</string>
+</resources>

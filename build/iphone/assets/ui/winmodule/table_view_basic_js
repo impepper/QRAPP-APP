@@ -1,0 +1,5 @@
+function tv_basic(){var win=Ti.UI.createWindow({backgroundColor:'#fff'});var data=[{title:'Row 1',hasChild:true,color:'red',selectedColor:'#fff'},{title:'Row 2',hasDetail:true,color:'green',selectedColor:'#fff'},{title:'Row 3',hasCheck:true,color:'blue',selectedColor:'#fff'},{title:'Row 4',color:'orange',selectedColor:'#fff'}];for(var i=0;i<data.length;i++){data[i].color='#000';data[i].font={fontWeight:'bold'}};var tableview=Ti.UI.createTableView({data:data});function showClickEventInfo(e,islongclick){var index=e.index;var section=e.section;var row=e.row;var rowdata=e.rowData;Ti.API.info('detail '+e.detail);var msg='row '+row+' index '+index+' section '+section+' row data '+rowdata;if(islongclick){msg="LONGCLICK "+msg;}
+Ti.UI.createAlertDialog({title:'Table View',message:msg}).show();}
+tableview.addEventListener('click',function(e)
+{showClickEventInfo(e);});tableview.addEventListener('longclick',function(e)
+{showClickEventInfo(e,true);});win.add(tableview);return win;};module.exports=tv_basic;
