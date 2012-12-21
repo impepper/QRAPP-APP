@@ -1,2 +1,0 @@
-function CustomPageWindow(tabbed_window,show_navbar,title,url,pagecontent){var Admob=require('ti.admob');var win=Ti.UI.createWindow({backgroundColor:'white'});var ad;Ti.Geolocation.accuracy=Ti.Geolocation.ACCURACY_BEST;Ti.Geolocation.distanceFilter=0;Ti.Geolocation.purpose='To show you local ads, of course!';Ti.Geolocation.getCurrentPosition(function reportPosition(e){if(!e.success||e.error){}
-else{}});return win};module.exports=CustomPageWindow;
