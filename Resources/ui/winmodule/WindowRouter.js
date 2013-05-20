@@ -1,10 +1,14 @@
-function WindowRouter(win_type,parameters,win_id) {
-
+function WindowRouter(win_type,parameters,win_id,_rootWin) {
+	if (_rootWin== undefined){_rootWin=''}
 	var self = Ti.UI.createWindow({
 		backgroundColor:'red'
 	});
 	
 	switch (win_type) {
+		// case 'TYPE_LISTGROUP':
+			// var ApplicationListGroup = require('ui/common/ApplicationListGroup');
+			// self = new ApplicationListGroup(parameters[0],parameters[1],parameters[2],parameters[3]);
+			// break;	
 		case 'TYPE_IMAGE':
 			var ImageViewWindow = require('ui/winmodule/ImageViewWindow');
 			// self = new ImageViewWindow(true,true,'Test','http://graffletopia.com/images/previews/872/thumb.png?1334680174',false);
@@ -63,13 +67,23 @@ function WindowRouter(win_type,parameters,win_id) {
 		case 'TYPE_QRACCOUNT':
 			var QRAccountWindow = require('ui/winmodule/QRAccountWindow');
 			// self = new QRAccountWindow('QRAccount');
-			self = new QRAccountWindow(parameters[0]);		
+			if (_rootWin !=undefined){
+				self = new QRAccountWindow(_rootWin,parameters[0]);
+			} else {
+				self = new QRAccountWindow('',parameters[0]);
+			}
+					
 			break;
 		case 'TYPE_QRHISTORY':
 			var QRHistoryWindow = require('ui/winmodule/QRHistoryWindow');
 			// self = new QRAccountWindow('QRAccount');
-			self = new QRHistoryWindow(parameters[0]);		
-			break;			
+			self = new QRHistoryWindow(_rootWin,parameters[0]);		
+			break;	
+		case 'TYPE_QRHISTORYLIST':
+			var QRHistoryListWindow = require('ui/winmodule/QRHistoryListWindow');
+			// self = new QRAccountWindow('QRAccount');
+			self = new QRHistoryListWindow(parameters[0]);		
+			break;						
 		case 'TYPE_QRGENERATOR':
 			var QRGeneratorWindow = require('ui/winmodule/QRGeneratorWindow');
 			// self = new QRAccountWindow('QRAccount');
@@ -91,6 +105,31 @@ function WindowRouter(win_type,parameters,win_id) {
 				backgroundColor: '#369'
 			})
 			break;
+		case 'TYPE_QR_WEBPAGE':
+			var QR_WebPageWindow = require('ui/winmodule/QR_WebPageWindow');
+			// self = new WebViewWindow(title,Link);
+			self = new QR_WebPageWindow(parameters[0],parameters[1]);
+			break;			
+		case 'TYPE_QR_TEXT':
+			var QR_TextWindow = require('ui/winmodule/QR_TextWindow');
+			// self = new WebViewWindow(title,Link);
+			self = new QR_TextWindow(parameters[0],parameters[1]);
+			break;
+		case 'TYPE_QR_VCARD':
+			var QR_VCARDWindow = require('ui/winmodule/QR_VCARDWindow');
+			// self = new WebViewWindow(title,Link);
+			self = new QR_VCARDWindow(parameters[0],parameters[1]);
+			break;
+		case 'TYPE_QR_PHONE':
+			var QR_PhoneWindow = require('ui/winmodule/QR_PhoneWindow');
+			// self = new WebViewWindow(title,Link);
+			self = new QR_PhoneWindow(parameters[0],parameters[1]);
+			break;
+		case 'TYPE_PDF':
+			var PDFWindow = require('ui/winmodule/PDFWindow');
+			// self = new WebViewWindow(title,Link);
+			self = new PDFWindow(parameters[0],parameters[1]);
+			break;			
 		default :
 			var WebViewWindow = require('ui/winmodule/WebViewWindow');
 			// self = new WebViewWindow(true,true,'Test','http://tw.yahoo.com');

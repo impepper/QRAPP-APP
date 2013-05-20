@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Preferences">
+    <ListPreference
+        android:title="QR Code Switching"
+        android:summary="Swith to QR Window in Larger or Normal Screen Mode"
+        android:key="loading_method" 
+	    android:entries="@array/listNames"
+	    android:entryValues="@array/listValues" 
+	    />	    
+</PreferenceScreen>

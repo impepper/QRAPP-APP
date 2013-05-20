@@ -34,27 +34,39 @@ function TableViewWindow(tabbed_window,show_navbar,title,acs_win_id,acs_table_ro
 		/*
 		 And we'll try to get the user's location for this second ad!
 		 */
-		Ti.Geolocation.accuracy = Ti.Geolocation.ACCURACY_BEST;
-		Ti.Geolocation.distanceFilter = 0;
-		Ti.Geolocation.purpose = 'To show you local ads, of course!';
-		Ti.Geolocation.getCurrentPosition(function reportPosition(e) {
-		    if (!e.success || e.error) {
-		        // aw, shucks...
-		    }
-		    else {
-		        win.add(Admob.createView({
-		            bottom: 0, //left: 0,
-		            width: adwidth, height: adgap,
-		            publisherId: 'a14fc70a8d46176', // You can get your own at http: //www.admob.com/
-		            adBackgroundColor: 'black',
-		            // testing: true,
-		            // dateOfBirth: new Date(1985, 10, 1, 12, 1, 1),
-		            gender: 'female',
-		            keywords: 'shopping',
-		            location: e.coords
-		        }));
-		    }
-		});	
+		win.add(Admob.createView({
+		    bottom: 0, //left: 0,
+		    width: adwidth, height: adgap,
+		    publisherId: 'a14fc70a8d46176', // You can get your own at http: //www.admob.com/
+		    adBackgroundColor: 'black',
+		    // testing: true,
+		    // dateOfBirth: new Date(1985, 10, 1, 12, 1, 1),
+		    gender: 'male',
+		    keywords: 'movie'
+		}));
+		view_footer_gap = adgap	        
+		
+		// Ti.Geolocation.accuracy = Ti.Geolocation.ACCURACY_BEST;
+		// Ti.Geolocation.distanceFilter = 0;
+		// Ti.Geolocation.purpose = 'To show you local ads, of course!';
+		// Ti.Geolocation.getCurrentPosition(function reportPosition(e) {
+		    // if (!e.success || e.error) {
+		        // // aw, shucks...
+		    // }
+		    // else {
+		        // win.add(Admob.createView({
+		            // bottom: 0, //left: 0,
+		            // width: adwidth, height: adgap,
+		            // publisherId: 'a14fc70a8d46176', // You can get your own at http: //www.admob.com/
+		            // adBackgroundColor: 'black',
+		            // // testing: true,
+		            // // dateOfBirth: new Date(1985, 10, 1, 12, 1, 1),
+		            // gender: 'female',
+		            // keywords: 'shopping',
+		            // location: e.coords
+		        // }));
+		    // }
+		// });	
 		//End of Admob		
 	}
 	// create table view data object
@@ -128,94 +140,145 @@ function TableViewWindow(tabbed_window,show_navbar,title,acs_win_id,acs_table_ro
 
 	
 	win.addEventListener('open',function(){
-
+		var localTabs = Ti.App.Properties.getBool('local_tabs',false)
 		// create table view
 		var table_items=[];
-		// alert('checkpoint 1')
-		var _login=Ti.App.Properties.getString('cloud_useremail','viewer.defaultui@fuihan.com')
-		var _passwd=Ti.App.Properties.getString('cloud_userpassword','viewerInPub')		
 		
-		if (Ti.Platform.osname=='mobileweb'){
-			var tempappid=Ti.Utils.base64decode(Ti.App.Properties.getString('viewerid','')).toString();
-			_login='viewer.'+tempappid.toString().substr(9,200)
-			_passwd='viewerInPub'
-		}
-		
-		var Cloud = require('ti.cloud'); 
-		Cloud.Users.login({
-		    login: _login,
-		    password: _passwd,
-		}, function (e) {
-			if (e.success) {
-				// alert('checkpoint 2')
-				Ti.API.info('win_root_id:'+acs_win_id)
-				Cloud.Objects.query({
-				    classname: 'windows',
-				    page: 1,
-				    per_page: 30,
-				    order:'table_id',
-				    where: {
-				        win_root_id:acs_win_id,
-				        user_id:e.users[0].custom_fields['content_user_id']
-				        // win_root_id:acs_table_root_id
-				    }
-				}, function (e) {
-					if (e.success) {
-						// alert('checkpoint 3')
-						Ti.API.info('length:'+e.windows.length)
+		if (localTabs){
+				Ti.include('conf/default.json')
+							// alert('checkpoint 3')
+						Ti.API.info('length:'+defaultJSON.length)
 						var tableitem;
-						for (var j=0;j<e.windows.length;j++){
+						for (var j=0;j<defaultJSON.length;j++){
 							// alert('checkpoint 5:'+e.windows[j].win_title+'/'+e.windows[j].win_type)
-							tableitem=e.windows[j];
-							var win_parameters=[]
-							if (tableitem.win_type=='TYPE_TABLE'){
-								// alert('checkpoint 4')
-								
-								if (Ti.Platform.osname=='android'){
-									win_parameters[0]=tableitem.win_parameters[0];
-									win_parameters[1]=tableitem.win_parameters[1];
-									win_parameters[2]=tableitem.win_parameters[2];
-									win_parameters[3]=tableitem.win_id;
-									win_parameters[4]=acs_win_id;									
-								} else  {
-									win_parameters.push(tableitem.win_parameters[0]);
-									win_parameters.push(tableitem.win_parameters[1]);
-									win_parameters.push(tableitem.win_parameters[2]);
-									win_parameters.push(tableitem.win_id);
-									win_parameters.push(acs_win_id);									
+							if (defaultJSON[j].win_root_id==acs_win_id){
+								tableitem=defaultJSON[j];
+								var win_parameters=[]
+								if (tableitem.win_type=='TYPE_TABLE'){
+									// alert('checkpoint 4')
+									
+									if (Ti.Platform.osname=='android'){
+										win_parameters[0]=tableitem.win_parameters[0];
+										win_parameters[1]=tableitem.win_parameters[1];
+										win_parameters[2]=tableitem.win_parameters[2];
+										win_parameters[3]=tableitem.win_id;
+										win_parameters[4]=acs_win_id;									
+									} else  {
+										win_parameters.push(tableitem.win_parameters[0]);
+										win_parameters.push(tableitem.win_parameters[1]);
+										win_parameters.push(tableitem.win_parameters[2]);
+										win_parameters.push(tableitem.win_id);
+										win_parameters.push(acs_win_id);									
+									}
+									// alert(win_parameters)	
+															
+								} else {
+									win_parameters=tableitem.win_parameters
 								}
-								// alert(win_parameters)	
-														
-							} else {
-								win_parameters=tableitem.win_parameters
-							}
-							
-							table_items[j] = Ti.UI.createTableViewRow({
-								hasDetail:true,
-								title:tableitem.win_title,
-								targetWindow:tableitem.win_type,
-								targetWindowParameters:win_parameters,
-								targetWindowId:tableitem.id
-							});
-							
-							if (tableitem.win_type=='TYPE_TABLE'){
-								// alert('checkpoint 4')
-								table_items[j].hasDetail=false;
-								table_items[j].hasChild=true;						
+								
+								table_items[j] = Ti.UI.createTableViewRow({
+									// hasDetail:true,
+									title:tableitem.win_title,
+									targetWindow:tableitem.win_type,
+									targetWindowParameters:win_parameters,
+									targetWindowId:tableitem.id
+								});
+								
+								if (tableitem.win_type=='TYPE_TABLE'){
+									// alert('checkpoint 4')
+									// table_items[j].hasDetail=false;
+									table_items[j].hasChild=true;						
+								}								
 							}							
 						}
-						tableview.data=table_items		
-					} else {
-				        alert('Error:\\n' +
-				            ((e.error && e.message) || JSON.stringify(e)));
-					}
-				})			
-		    } else {
-		        alert('Error:\\n' +
-		            ((e.error && e.message) || JSON.stringify(e)));
-			}
-		});	
+						tableview.data=table_items
 			
+		} else {
+
+			var _login=Ti.App.Properties.getString('cloud_useremail','viewer.defaultui@fuihan.com')
+			var _passwd=Ti.App.Properties.getString('cloud_userpassword','viewerInPub')		
+			
+			if (Ti.Platform.osname=='mobileweb'){
+				var tempappid=Ti.Utils.base64decode(Ti.App.Properties.getString('viewerid','')).toString();
+				_login='viewer.'+tempappid.toString().substr(9,200)
+				_passwd='viewerInPub'
+			}
+			
+			var Cloud = require('ti.cloud'); 
+			Cloud.Users.login({
+			    login: _login,
+			    password: _passwd,
+			}, function (e) {
+				if (e.success) {
+					// alert('checkpoint 2')
+					Ti.API.info('win_root_id:'+acs_win_id)
+					Cloud.Objects.query({
+					    classname: 'windows',
+					    page: 1,
+					    per_page: 30,
+					    order:'win_id',
+					    where: {
+					        win_root_id:acs_win_id,
+					        user_id:e.users[0].custom_fields['content_user_id']
+					        // win_root_id:acs_table_root_id
+					    }
+					}, function (e) {
+						if (e.success) {
+							// alert('checkpoint 3')
+							Ti.API.info('length:'+e.windows.length)
+							var tableitem;
+							for (var j=0;j<e.windows.length;j++){
+								// alert('checkpoint 5:'+e.windows[j].win_title+'/'+e.windows[j].win_type)
+								tableitem=e.windows[j];
+								var win_parameters=[]
+								if (tableitem.win_type=='TYPE_TABLE'){
+									// alert('checkpoint 4')
+									
+									if (Ti.Platform.osname=='android'){
+										win_parameters[0]=tableitem.win_parameters[0];
+										win_parameters[1]=tableitem.win_parameters[1];
+										win_parameters[2]=tableitem.win_parameters[2];
+										win_parameters[3]=tableitem.win_id;
+										win_parameters[4]=acs_win_id;									
+									} else  {
+										win_parameters.push(tableitem.win_parameters[0]);
+										win_parameters.push(tableitem.win_parameters[1]);
+										win_parameters.push(tableitem.win_parameters[2]);
+										win_parameters.push(tableitem.win_id);
+										win_parameters.push(acs_win_id);									
+									}
+									// alert(win_parameters)	
+															
+								} else {
+									win_parameters=tableitem.win_parameters
+								}
+								
+								table_items[j] = Ti.UI.createTableViewRow({
+									// hasDetail:true,
+									title:tableitem.win_title,
+									targetWindow:tableitem.win_type,
+									targetWindowParameters:win_parameters,
+									targetWindowId:tableitem.id
+								});
+								
+								if (tableitem.win_type=='TYPE_TABLE'){
+									// alert('checkpoint 4')
+									// table_items[j].hasDetail=false;
+									table_items[j].hasChild=true;						
+								}							
+							}
+							tableview.data=table_items		
+						} else {
+					        alert('Error:\\n' +
+					            ((e.error && e.message) || JSON.stringify(e)));
+						}
+					})			
+			    } else {
+			        alert('Error:\\n' +
+			            ((e.error && e.message) || JSON.stringify(e)));
+				}
+			});	
+		}	
 	})
 	
 	if (tabbed_window && show_navbar) {

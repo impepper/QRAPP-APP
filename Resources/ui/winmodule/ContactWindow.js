@@ -1,5 +1,7 @@
 function ContactWindow(tabbed_window,show_navbar,title,avatarid) {
 
+	Ti.include('/jslib/fnc_logging.js');
+
 	var win = Ti.UI.createWindow({
 		title:title,
 		backgroundColor:'#fff',

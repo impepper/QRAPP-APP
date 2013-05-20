@@ -1,0 +1,146 @@
+Ti.App.Properties.setBool('local_tabs',false)
+var local_userrole = 2
+
+var defaultJSON = 
+[{
+	// "id":"5125a0d215e0604f11050907",
+	"win_id":1,
+	"win_root_id":0,
+	"win_type":"TYPE_CUSTOMPAGE",
+	"win_title":"關於澎湖",
+	"win_icon":"info",
+	"win_published":true,
+	"win_parameters":[true,false,
+					"TYPE_CUSTOMPAGE",
+					"<p>紐約洋基隊「豪華」傷兵名單再添一名！「火球男」Joba Chamberlain於3日被放進15天傷兵名單，據了解，洋基仍不會拉上我國旅美好手王建民上大聯盟，原因是球團認為他尚未準備好。"+
+					"根據報導，Chamberlain因右斜肌拉傷，要暫時離開陣容，這已是洋基本季第10位進入傷兵名單的球星。總經理Brian Cashman受訪時表示：「球隊希望Chamberlain能在兩週內痊癒。」"+
+					"他也補充說明到自己無法保證一定會實現這個目標。</p>"+
+					"<p style='text-align: center;'><img style='vertical-align: middle;' src='http://tour.penghu.gov.tw/upload/70/017.jpg' alt='' width='240' height='173' /></p>",
+					"",
+					"",
+					"",
+					""]
+}, {
+	// "id":"5125a0d215e0604f11050907",
+	"win_id":1,
+	"win_root_id":0,
+	"win_type":"TYPE_CUSTOMPAGE",
+	"win_title":"關於 Local",
+	"win_icon":"info",
+	"win_published":true,
+	"win_parameters":[true,false,
+					"TYPE_CUSTOMPAGE",
+					"test.html",
+					"",
+					"",
+					"",
+					""]
+}, {
+	// "id":"5125a6e84f4c8a083a04d51b",
+	"win_id":2,
+	"win_root_id":0,
+	"win_type":"TYPE_WEBVIDEO",
+	"win_title":"微電影",
+	"win_icon":"MD-camera-video",
+	"win_published":true,
+	"win_parameters":[true,false,
+					"TYPE_WEBVIDEO",
+					"Youtube",
+					"nE2eIJvKrcI",
+					"",
+					"",
+					""]
+}, {
+	//Images, Need to connect Remote CS Serever
+	// "id":"5125a3468f9a59083a04c093",
+	"id":"4ff1a1220020442da5021231",
+	"win_id":3,
+	"win_root_id":0,
+	"win_type":"TYPE_COVERFLOW",
+	"win_title":"澎湖美景",
+	"win_icon":"MD-camera-photo",
+	"win_published":true,
+	"win_parameters":[true,true,
+					"TYPE_COVERFLOW",
+					"",
+					"",
+					"",
+					"",
+					""]
+}, {
+	// "id":"508e4a0a3a768a09f40a2569",
+	"win_id":4,
+	"win_root_id":0,
+	"win_type":"TYPE_RSS",
+	"win_title":"課後社團活動 RSS",
+	"win_icon":"bicycle",
+	"win_published":true,
+	"win_parameters":[true,false,
+					"TYPE_RSS",
+					"http://college.itri.org.tw/news.aspx?tp=&MGC=1&MG=0&encode=utf-8&post=out",
+					"",
+					"",
+					"",
+					""]
+}, {
+	// "id":"508e4a0a3a768a09f40a2569",
+	"win_id":4,
+	"win_root_id":0,
+	"win_type":"TYPE_RSS2",
+	"win_title":"課後社團活動 RSS2",
+	"win_icon":"bicycle",
+	"win_published":true,
+	"win_parameters":[true,false,
+					"TYPE_RSS2",
+					"http://college.itri.org.tw/news.aspx?tp=&MGC=1&MG=0&encode=utf-8&post=out",
+					"",
+					"",
+					"",
+					""]
+}, {
+	// "id":"508e45e33a35e64f5e0a29ec",
+	"win_id":5,
+	"win_root_id":0,
+	"win_type":"TYPE_WEB",
+	"win_title":"二年一班",
+	"win_icon":"users",
+	"win_published":true,
+	"win_parameters":[true,false,
+					"TYPE_WEB",
+					"http://tw.class.uschoolnet.com/class/?csid=css000000146036",
+					"",
+					"",
+					"",
+					""]
+}, {
+	// "id":"508e4674cff757130d0720a4",
+	"win_id":6,
+	"win_root_id":0,
+	"win_type":"TYPE_TABLE",
+	"win_title":"班級網頁",
+	"win_icon":"unfold-multiple",
+	"win_published":true,
+	"win_parameters":[true,false,
+					"TYPE_TABLE",
+					"",
+					"",
+					"",
+					"",
+					""]
+}, {
+	//Contact Infos, Need to connect Remote CS Serever
+	// "id":"50b033f415e06042bd14c56",
+	"win_id":7,
+	"win_root_id":6,
+	"win_type":"TYPE_CONTACT",
+	"win_title":"聯繫資料",
+	"win_icon":"about",
+	"win_published":true,
+	"win_parameters":[true,false,
+					"TYPE_CONTACT",
+					"4fd94e7b611540236500013d",
+					"",
+					"",
+					"",
+					""]
+}]

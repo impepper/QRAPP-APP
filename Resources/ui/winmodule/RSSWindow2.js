@@ -1,4 +1,8 @@
 function RSSWindow2(tabbed_window,show_navbar,title,rssurl) {
+
+	Ti.include('/jslib/fnc_logging.js');
+	Ti.include('/jslib/fnc_string.js');
+
 	var win = Ti.UI.createWindow({
 		title:title,
 		backgroundColor:'white',
@@ -7,7 +11,7 @@ function RSSWindow2(tabbed_window,show_navbar,title,rssurl) {
 	var url = rssurl;
 	// var url = 'http://v2.0.news.tmg.s3.amazonaws.com/feeds/news.xml';
 	// url= 'http://feeds.feedburner.com/5i01?format=xml';
-	Titanium.include('ui/winmodule/strip_tags.js');  
+	Titanium.include('jslib/strip_tags.js');  
 	
 	var data = [];
 	

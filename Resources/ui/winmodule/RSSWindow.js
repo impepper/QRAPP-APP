@@ -1,4 +1,9 @@
 function RSSWindow(tabbed_window,show_navbar,title,rssurl) {
+
+	Ti.include('/jslib/fnc_logging.js');
+	Ti.include('/jslib/fnc_string.js');
+
+
 	var win = Ti.UI.createWindow({
 		title:title,
 		backgroundColor:'white',
@@ -13,7 +18,7 @@ function RSSWindow(tabbed_window,show_navbar,title,rssurl) {
 	// loadRRSFeed(url) // is at the bottom of the js - after all the functions
 	
 	// useful for getting rid of html links in text elements in a feed
-	Titanium.include('ui/winmodule/strip_tags.js');  
+	Titanium.include('jslib/strip_tags.js');  
 	// see: http://pastie.org/837981
 
 	
@@ -179,8 +184,9 @@ function RSSWindow(tabbed_window,show_navbar,title,rssurl) {
 		feedTableView = Titanium.UI.createTableView({
 			data:data,
 			top:0,
-			width:320,
-			height:260
+			bottom:110,
+			width:320
+			// height:260
 		});
 		
 		// Add the tableView to the current window

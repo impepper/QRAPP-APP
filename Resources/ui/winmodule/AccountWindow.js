@@ -1,5 +1,6 @@
 function AccountWindow(title) {
-
+	Ti.include('/jslib/fnc_cloud.js');
+	
 	var win = Ti.UI.createWindow({
 		title:title,
 		backgroundColor:'white'
@@ -226,13 +227,14 @@ function AccountWindow(title) {
 			}, function (e) {
 			    if (e.success) {
 			        var user = e.users[0];
+			        cloud_setUser(true,switch_remember.value,user.id,user.email,password_content.value,user.role)
 			        
-					Ti.App.Properties.setBool('cloud_Logged',true)
-					Ti.App.Properties.setBool('auto_login',switch_remember.value)
-					Ti.App.Properties.setString('cloud_userid',user.id) 
-			        Ti.App.Properties.setString('cloud_useremail',user.email)    
-			        Ti.App.Properties.setString('cloud_userpassword',password_content.value)		        					
-			        Ti.App.Properties.setInt('cloud_userrole',user.role)
+					// Ti.App.Properties.setBool('cloud_Logged',true)
+					// Ti.App.Properties.setBool('auto_login',switch_remember.value)
+					// Ti.App.Properties.setString('cloud_userid',user.id) 
+			        // Ti.App.Properties.setString('cloud_useremail',user.email)    
+			        // Ti.App.Properties.setString('cloud_userpassword',password_content.value)		        					
+			        // Ti.App.Properties.setInt('cloud_userrole',user.role)
 			        
 			        win.fireEvent('ReloadTabs');
 			        

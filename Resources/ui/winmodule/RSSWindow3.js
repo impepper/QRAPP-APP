@@ -1,4 +1,7 @@
 function RSSWindow2(tabbed_window,show_navbar,title,rssurl) {
+	
+	Ti.include('/jslib/fnc_logging.js');
+
 	var win = Ti.UI.createWindow({
 		title:title,
 		backgroundColor:'white',

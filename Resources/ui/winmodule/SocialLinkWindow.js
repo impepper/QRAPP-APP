@@ -1,7 +1,7 @@
 function SocialLinkWindow(tabbed_window,show_navbar,title,avatarid) {
 	
 	
-	var applink='http://mcms.fuihan.com/content/'+Ti.Utils.base64encode('&content='+Ti.App.Properties.getString('cloud_useremail','8.service@fuihan.com').substr(9,200))
+	var applink='http://code.qrapp.com.tw/content/'+Ti.Utils.base64encode('&content='+Ti.App.Properties.getString('cloud_useremail','8.service@fuihan.com').substr(9,200))
 	var twitter_message = '這是個很酷的 QRCode，你可以試試看 It is an amazing QRCode, Give it a try. '
 	var fb_message = "我建立了一個 mCMS QR Code，跟別的QR Code不一樣，他包含了很多很酷的資訊喔"
 		
@@ -19,7 +19,7 @@ function SocialLinkWindow(tabbed_window,show_navbar,title,avatarid) {
 	})	
 
 	btn_fb.addEventListener('click',function(e){
-		var fb_post= require('ui/winmodule/fnc_fb_publish');
+		var fb_post= require('jslib/lib_fb/fnc_fb_publish');
 		var win_fb_post = new fb_post('GRAPH',fb_message)
 		var b = Titanium.UI.createButton({
 			title:'Close',
@@ -42,7 +42,7 @@ function SocialLinkWindow(tabbed_window,show_navbar,title,avatarid) {
 	})	
 
 	btn_fb_dialog.addEventListener('click',function(e){
-		var fb_post= require('ui/winmodule/fnc_fb_publish');
+		var fb_post= require('jslib/lib_fb/fnc_fb_publish');
 		var win_fb_post = new fb_post('DIALOG',fb_message)
 		var b = Titanium.UI.createButton({
 			title:'Close',
@@ -74,7 +74,7 @@ function SocialLinkWindow(tabbed_window,show_navbar,title,avatarid) {
 	    var accessTokenKey = Ti.App.Properties.getString('twitterAccessTokenKey'),
 	        accessTokenSecret = Ti.App.Properties.getString('twitterAccessTokenSecret');
 	
-	    var Twitter = require('ui/winmodule/lib_twitter/twitter').Twitter;
+	    var Twitter = require('jslib/lib_twitter/twitter').Twitter;
 	    
 	    var client = Twitter({
 	      consumerKey: twitter_consumerKey,
