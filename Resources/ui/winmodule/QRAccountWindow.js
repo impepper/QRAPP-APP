@@ -472,6 +472,7 @@ function QRAccountWindow(_root_win,title) {
 				        // alert('Error:\\n' + ((e.error && e.message) || JSON.stringify(e)));
 				        // alert('mCMS App ID - '+_loginuser+'/'+Ti.App.Properties.getString('acs-api-key-production','none' ))
 				        alert(L('_ERR_MAINTAIN','Sorry, mCMS QRCode Service in under maintaining, please come back later.'))
+				        win.fireEvent('ResetRootTabs')
 				        
 				    }
 				});
@@ -480,6 +481,7 @@ function QRAccountWindow(_root_win,title) {
 				} else {
 				// Ti.API.info('error getting cloudkey using default instead')
 				alert(L('_ERR_GETTINGCONTENT','Sorry, We cannot get your QR APP Contents, please come back later.'))
+				win.fireEvent('ResetRootTabs')
 			}
 		},1500)
 

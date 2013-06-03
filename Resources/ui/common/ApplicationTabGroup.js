@@ -369,7 +369,8 @@ function ApplicationTabGroup(isTablet) {
 				    } else {				    	
 				    	//Failed in Querying Windows
 				    	if (e.error){
-				    		alert(L('_ERR_GETTINGCONTENT','Sorry, Failed in getting Contents withi your account, Please check your content managements.'))   
+				    		alert(L('_ERR_GETTINGCONTENT','Sorry, Failed in getting Contents withi your account, Please check your content managements.')) 
+				    		loadingDefaultTabs(self_win,true)  
 				    	} else {
 							var ApplicationListGroup = require('ui/common/ApplicationListGroup');
 							app_list_win = new ApplicationListGroup(tabgroupWin,true,true,L('_QRCONTENT','QR Content'),'');
@@ -380,7 +381,8 @@ function ApplicationTabGroup(isTablet) {
 				});			
 		    } else { 
 		    	//Failed in Logging In   
-		        alert(L('_ERR_LOGIN','Sorry, Failed in Loggin in. Please try again later.'))    
+		        alert(L('_ERR_LOGIN','Sorry, Failed in Loggin in. Please try again later.')) 
+		        loadingDefaultTabs(self_win,true)   
 			}; //-------Query Windows			
 		});	//------ USer Login
 
