@@ -263,13 +263,15 @@ function ApplicationListGroup(_root_win,tabbed_window,show_navbar,title,acs_win_
 				        // alert('Error:\\n' +
 				            // ((e.error && e.message) || JSON.stringify(e)));
 				            // alert('wrong')
-				        alert(L('_ERR_GETTINGCONTENT','Sorry, Failed in getting Contents withi your account, Please check your content managements.'))    
+				        alert(L('_ERR_GETTINGCONTENT','Sorry, Failed in getting Contents withi your account, Please check your content managements.'))
+				        win.close();    
 					}
 				})			
 		    } else {
 		        // alert('Error:\\n' +
 		            // ((e.error && e.message) || JSON.stringify(e)));
-		        alert(L('_ERR_LOGIN','Sorry, Failed in Loggin in. Please try again later.'))     
+		        alert(L('_ERR_LOGIN','Sorry, Failed in Loggin in. Please try again later.'))
+		        win.close();     
 			}
 		});			
 	})

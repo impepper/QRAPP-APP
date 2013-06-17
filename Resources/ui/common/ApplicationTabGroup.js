@@ -1,5 +1,6 @@
 function ApplicationTabGroup(isTablet) {
-	Ti.include('/jslib/fnc_cloud.js');
+	alert('create TABs')
+	Ti.include('jslib/fnc_cloud.js');
 	
 	var init_stratup_tabs=0;
 	
@@ -89,6 +90,7 @@ function ApplicationTabGroup(isTablet) {
 	if (osname=='mobileweb'){
 		var tempappid=Ti.Utils.base64decode(Ti.App.Properties.getString('viewerid','')).toString();
 		_login='viewer.'+tempappid.toString().substr(9,200)
+		alert('user:'+_login)
 	}	
 	
 	// future feature : Get Keys for Right ACS applications

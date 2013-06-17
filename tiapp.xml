@@ -14,7 +14,7 @@
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>3.0.2.GA</sdk-version>
+    <sdk-version>3.1.0.GA</sdk-version>
     <id>com.fuihan.myapple</id>
     <name>mCMS QR Reader</name>
     <version>1.2.2</version>
@@ -50,14 +50,6 @@
         <uses-sdk android:maxSdkVersion="13" android:minSdkVersion="8" android:targetSdkVersion="13"/>
         <tool-api-level>13</tool-api-level>
     </android>
-    <mobileweb>
-        <precache/>
-        <splash>
-            <enabled>true</enabled>
-            <inline-css-images>true</inline-css-images>
-        </splash>
-        <theme>default</theme>
-    </mobileweb>
     <modules>
         <module platform="commonjs" version="2.3.0">ti.cloud</module>
         <module platform="iphone">com.acktie.mobile.ios.qr</module>
