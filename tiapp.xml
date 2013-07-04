@@ -14,7 +14,7 @@
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>3.1.0.GA</sdk-version>
+    <sdk-version>3.1.1.GA</sdk-version>
     <id>com.fuihan.myapple</id>
     <name>mCMS QR Reader</name>
     <version>1.2.2</version>
@@ -60,5 +60,8 @@
         <module platform="iphone" version="1.1.1">ti.imagefactory</module>
         <module platform="android" version="2.2.1">ti.imagefactory</module>
         <module platform="iphone">com.kuchbee.quickpdf</module>
+        <module platform="android">analytics.google</module>
+        <module platform="iphone">analytics.google</module>
+        <module platform="commonjs">monglodb</module>
     </modules>
 </ti:app>

@@ -4,6 +4,11 @@ if (Ti.version < 1.8 ) {
 }
 
 if (Ti.Platform.osname != 'mobileweb'){
+	
+	if (Ti.Filesystem.getFile('/conf/defaultaccount.js')){
+		Ti.include('/conf/defaultaccount.js');
+	}
+	
 	// Ti.include('/jslib/fnc_logging.js');
 	Ti.include('/jslib/fnc_db.js');
 	// Ti.include('/jslib/fnc_cloud.js');

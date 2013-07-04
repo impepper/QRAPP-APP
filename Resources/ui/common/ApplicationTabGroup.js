@@ -1,5 +1,5 @@
 function ApplicationTabGroup(isTablet) {
-	alert('create TABs')
+	// alert('create TABs')
 	Ti.include('jslib/fnc_cloud.js');
 	
 	var init_stratup_tabs=0;
@@ -194,7 +194,10 @@ function ApplicationTabGroup(isTablet) {
 
 		_login=Ti.App.Properties.getString('cloud_useremail','viewer.defaultui@fuihan.com')
 		_passwd=Ti.App.Properties.getString('cloud_userpassword','viewerInPub')
-
+		
+		Ti.API.info('User2:'+_login)
+		Ti.API.info('Pass2:'+_password)
+	
 		if (typeof (startup)=='undefined'){startup=false}
 
 		var Cloud = require('ti.cloud'); 
@@ -211,7 +214,7 @@ function ApplicationTabGroup(isTablet) {
 				//Step 1 - Login Success, Start  Querying modules
 				Ti.App.Properties.setBool('cloud_Logged',true)		
 		        var userrole=0; 
-		        if ((typeof (user.role)!= 'undefined') && (user.role!='')){
+		        if ((typeof (user.role)!= undefined) && (user.role!='')){
 		        	userrole=6
 		        } else {
 		        	userrole=parseInt(user.role.toString())
@@ -222,6 +225,12 @@ function ApplicationTabGroup(isTablet) {
 					// Ti.App.Properties.setString('chat_root_user',user.id);
 				// }
 				
+				//Local defined user setting
+				var win_id_range = {"$gt":0}
+				if (Ti.App.Properties.getBool('local_user',false)){
+					win_id_range = {"$gt":0,"$lt":998}				
+				}
+				
 				Cloud.Objects.query({
 				    classname: 'windows',
 				    page: 1,
@@ -229,7 +238,7 @@ function ApplicationTabGroup(isTablet) {
 				    order:'win_id',
 				    where: {
 				    	user_id:user.custom_fields['content_user_id'],
-				        win_id: {"$gt":0},
+				        win_id: win_id_range,
 				        //win_published:true,
 				        win_root_id:0
 				    }
@@ -349,7 +358,7 @@ function ApplicationTabGroup(isTablet) {
 						// alert('resultTabs:'+resultTabs.length + '/ self_win_Tabs: '+self_win.tabs.length +'/ init_stratup_tabs: '+init_stratup_tabs)
 						
 						//remove previous tab windows
-					    while (resultTabs.length<(tabgroupWin.tabs.length)){
+						while (resultTabs.length<(tabgroupWin.tabs.length)){
 					    	tabgroupWin.removeTab(tabgroupWin.tabs[0])
 					    }
 					    
@@ -383,7 +392,8 @@ function ApplicationTabGroup(isTablet) {
 				});			
 		    } else { 
 		    	//Failed in Logging In   
-		        alert(L('_ERR_LOGIN','Sorry, Failed in Loggin in. Please try again later.')) 
+		        alert(L('_ERR_LOGIN','Sorry, Failed in Loggin in. Please try again later.'))
+		        // alert('Loging Error: '+e.message) 
 		        loadingDefaultTabs(self_win,true)   
 			}; //-------Query Windows			
 		});	//------ USer Login
@@ -473,6 +483,7 @@ function ApplicationTabGroup(isTablet) {
 	// --- If not, Loading Default QR Tabs
 	var defaultTabs = false
 	if (Ti.Network.networkTypeName == 'NONE'){
+		Ti.API.info('currently out of networking sertvice - load default local data')
 		defaultTabs = true
 	}
 	
@@ -480,8 +491,7 @@ function ApplicationTabGroup(isTablet) {
 	var localTabs = Ti.App.Properties.getBool('local_tabs',false)
 	
 	if (defaultTabs){	
-		// No network, loading default QR tabs
-		
+		// No network, loading default QR tabs		
 		loadingDefaultTabs(self_win,true)
 	} else {
 		if (localTabs){
@@ -504,7 +514,6 @@ function ApplicationTabGroup(isTablet) {
 					_login='viewer.'+tempappid.toString().substr(9,200)
 					_passwd='viewerInPub'	
 				}
-				// alert('start loadingTabs')		
 				loadingTabs(self_win,true);					
 			} else {
 				// alert('start loadingDefaultTabs')		
