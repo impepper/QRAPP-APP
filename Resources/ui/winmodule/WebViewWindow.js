@@ -1,5 +1,8 @@
 function WebViewWindow(tabbed_window,show_navbar,title,url) {
 	Ti.include('/jslib/fnc_logging.js');
+	var GA = require('analytics.google'); 
+	var tracker = GA.getTracker("UA-41799104-1");
+	
 	
 	var win = Ti.UI.createWindow({
 		title:title,
@@ -108,7 +111,10 @@ function WebViewWindow(tabbed_window,show_navbar,title,url) {
 		win.navBarHidden = true;
 	}
 	
-	win.addEventListener('open',function(){logging('WEBPAGE', title)})
+	win.addEventListener('open',function(){
+		logging('WEBPAGE', title)
+		tracker.trackEvent({ category: "WEBPAGE", action: "Open", label: title, value: 1 });
+	})
 	
 	return win
 };

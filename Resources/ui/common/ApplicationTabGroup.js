@@ -8,7 +8,7 @@ function ApplicationTabGroup(isTablet) {
 	
 	var self_win = Ti.UI.createTabGroup();
 	
-	var Window = require('ui/handheld/ApplicationWindow');	
+	// var Window = require('ui/handheld/ApplicationWindow');	
 	var ApplicationListGroup = require('ui/common/ApplicationListGroup');
 
 	var resultTabs=[];

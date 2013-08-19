@@ -22,7 +22,7 @@
     <url>http://</url>
     <description>This is the Official Deployment for QR Apps Tranformation….</description>
     <copyright>2012 by Lin</copyright>
-    <icon>Logo.png</icon>
+    <icon>logo_testing.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
     <statusbar-style>default</statusbar-style>
@@ -32,6 +32,7 @@
     <analytics>true</analytics>
     <guid>342e1d1a-cedc-4917-beaf-2ae0c0c2bd92</guid>
     <property name="ti.ui.defaultunit">system</property>
+    <property name="ti.android.bug2373.finishfalseroot" type="bool">true</property>
     <iphone>
         <orientations device="iphone">
             <orientation>Ti.UI.PORTRAIT</orientation>
