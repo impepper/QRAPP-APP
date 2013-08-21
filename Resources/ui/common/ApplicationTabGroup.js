@@ -79,19 +79,21 @@ function ApplicationTabGroup(isTablet) {
 		}	
 	}
 	
-	if (Ti.App.Properties.getBool('auto_login',false)){
-	    var _login= Ti.App.Properties.getString('cloud_useremail','viewer.defaultui@fuihan.com')
-	    var _password = Ti.App.Properties.getString('cloud_userpassword','viewerInPub')	    
+	if (osname != 'mobileweb'){
+		if (Ti.App.Properties.getBool('auto_login',false)){
+		    var _login= Ti.App.Properties.getString('cloud_useremail','viewer.defaultui@fuihan.com')
+		    var _password = Ti.App.Properties.getString('cloud_userpassword','viewerInPub')	    
+		} else {
+			cloud_resetUser()   		
+		}
 	} else {
-		cloud_resetUser()   		
-	}
-
-	//necessary for mobileweb interface : getting UserID form webbrowser (Setting by POST in web)
-	if (osname=='mobileweb'){
+		//necessary for mobileweb interface : getting UserID form webbrowser (Setting by POST in web)
 		var tempappid=Ti.Utils.base64decode(Ti.App.Properties.getString('viewerid','')).toString();
 		_login='viewer.'+tempappid.toString().substr(9,200)
-		alert('user:'+_login)
-	}	
+		Ti.App.Properties.setString('cloud_useremail',_login)
+		Ti.App.Properties.setString('cloud_userpassword',_password)
+		// alert('user:'+_login)		
+	}
 	
 	// future feature : Get Keys for Right ACS applications
 	// if (_login.substr(7,200) == 'defaultui@fuihan.com'){
@@ -102,8 +104,6 @@ function ApplicationTabGroup(isTablet) {
 	
 	Ti.API.info('User:'+_login)
 	Ti.API.info('Pass:'+_password)
-	
-		
 	
 	var loadingDefaultTabs = function(tabgroupWin,startup){
 		resultTabs=[];
@@ -168,19 +168,8 @@ function ApplicationTabGroup(isTablet) {
 			self_win.addTab(tabbed_tab);	    			    
 	  	 	// self_win.activeTab=1;
 	  	 	init_stratup_tabs=2;	
-		} else {		    
-		    /// New modificaton
-		    // var tabbed_win2 = new WindowRouter('TYPE_QRGENERATOR',[true,true,L('_QRGENERATOR','QR Generator')],'')	
-			// var tabbed_tab2 = Ti.UI.createTab({
-				// titleid: '_QRGENERATOR',
-				// icon: '/icons/qrcode.png',
-				// window_type:'TYPE_QRGENERATOR',
-				// window: tabbed_win2
-			// });					
-			// self_win.addTab(tabbed_tab2);
-			// self_win.addTab(tabbed_tab);
-	  	 	// init_stratup_tabs=2;	
 		}
+		
 		// alert('self_win:'+self_win.tabs.length+'/init_stratup_tabs:'+init_stratup_tabs)
 		while (self_win.tabs.length>init_stratup_tabs){
 	    	self_win.removeTab(self_win.tabs[0])
@@ -442,7 +431,7 @@ function ApplicationTabGroup(isTablet) {
 					tabbed_tab.titleid='_MCMS'
 				}
 
-				tabbed_tab.icon = (Ti.Platform.osname=='mobileweb')?'http://code.qrapp.com.tw/mobileWeb/icons/'+winicon+'.png':'/icons/'+winicon+'.png'
+				tabbed_tab.icon = (Ti.Platform.osname=='mobileweb')?'icons/'+winicon+'.png':'/icons/'+winicon+'.png'
 				
 				//making every windows capable to reload tabs from new QR App
 				tabbed_win.containingTab = tabbed_tab;
