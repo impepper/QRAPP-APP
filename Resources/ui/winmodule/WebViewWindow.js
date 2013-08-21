@@ -1,11 +1,9 @@
 function WebViewWindow(tabbed_window,show_navbar,title,url) {
 	// alert('checkpoint 1')
 	Ti.include('/jslib/fnc_logging.js');
-<<<<<<< HEAD
+
 	if (Ti.Platform.osname !='mobileweb'){
-=======
-	if (Ti.Platform.osname !='mobile'){
->>>>>>> BitBucket/master
+
 		var GA = require('analytics.google'); 
 		var tracker = GA.getTracker("UA-41799104-1");	
 	}
@@ -130,11 +128,9 @@ function WebViewWindow(tabbed_window,show_navbar,title,url) {
 	
 	win.addEventListener('open',function(){
 		logging('WEBPAGE', title)
-<<<<<<< HEAD
+
 		if (Ti.Platform.osname !='mobileweb'){
-=======
-		if (Ti.Platform.osname !='mobile'){
->>>>>>> BitBucket/master
+
 			tracker.trackEvent({ category: "WEBPAGE", action: "Open", label: title, value: 1 });
 		}
 	})

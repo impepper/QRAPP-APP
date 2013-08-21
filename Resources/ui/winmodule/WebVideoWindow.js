@@ -1,11 +1,9 @@
 function WebVideoWindow(tabbed_window,show_navbar,title,videosource,url) {
 
 	Ti.include('/jslib/fnc_logging.js');
-<<<<<<< HEAD
+
 	if (Ti.Platform.osname !='mobileweb'){
-=======
-	if (Ti.Platform.osname !='mobile'){
->>>>>>> BitBucket/master
+
 		var GA = require('analytics.google'); 
 		var tracker = GA.getTracker("UA-41799104-1");
 	}
@@ -104,11 +102,8 @@ function WebVideoWindow(tabbed_window,show_navbar,title,videosource,url) {
 	}
 	win.addEventListener('open',function(){
 		logging('WEBVIDEO', title)
-<<<<<<< HEAD
 		if (Ti.Platform.osname !='mobileweb'){
-=======
-		if (Ti.Platform.osname !='mobile'){
->>>>>>> BitBucket/master
+
 			tracker.trackEvent({ category: "WEBVIDEO", action: "Open", label: title, value: 1 });
 		}
 	})

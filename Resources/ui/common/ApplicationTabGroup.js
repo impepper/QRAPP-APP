@@ -92,12 +92,8 @@ function ApplicationTabGroup(isTablet) {
 		_login='viewer.'+tempappid.toString().substr(9,200)
 		Ti.App.Properties.setString('cloud_useremail',_login)
 		Ti.App.Properties.setString('cloud_userpassword',_password)
-<<<<<<< HEAD
 		// alert('user:'+_login)
 		// alert('Clouduser:'+Ti.App.Properties.getString('cloud_useremail','No User Set'))		
-=======
-		// alert('user:'+_login)		
->>>>>>> BitBucket/master
 	}
 	
 	// Ti.App.Properties.setString('cloud_useremail',_login)
