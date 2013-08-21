@@ -1,7 +1,11 @@
 function WebViewWindow(tabbed_window,show_navbar,title,url) {
+	// alert('checkpoint 1')
 	Ti.include('/jslib/fnc_logging.js');
-	var GA = require('analytics.google'); 
-	var tracker = GA.getTracker("UA-41799104-1");
+	if (Ti.Platform.osname !='mobileweb'){
+		var GA = require('analytics.google'); 
+		var tracker = GA.getTracker("UA-41799104-1");	
+	}
+	
 	
 	
 	var win = Ti.UI.createWindow({
@@ -9,16 +13,23 @@ function WebViewWindow(tabbed_window,show_navbar,title,url) {
 		backgroundColor:'black',
 		navBarHidden:true
 	});
-	
+	// alert('checkpoint 2a')
 	var osname = Ti.Platform.osname,
 		version = Ti.Platform.version,
 		height = Ti.Platform.displayCaps.platformHeight,
-		width = Ti.Platform.displayCaps.platformWidth;	
-	var isTablet = osname === 'ipad' || (osname === 'android' && (width > 899 || height > 899));
+		width = Ti.Platform.displayCaps.platformWidth;
+	// alert('checkpoint 2b')
+	var isTablet = false
+	if ((osname === 'ipad') || (osname === 'android' && (width > 899 || height > 899))){
+		isTablet = true
+	};
+	// alert('checkpoint 2c')
 	var adgap=(isTablet?90:50);
 	var adwidth=(isTablet?728:320);
+	// alert('checkpoint 2d')
 	var ad_role = Ti.App.Properties.getInt('cloud_userrole',0)
 	var view_header_gap=0
+	// alert('checkpoint 2e')
 	if (Ti.Platform.osname=='mobileweb'){
 		var scrollView = Ti.UI.createScrollView({
 		  contentWidth: 'auto',
@@ -28,6 +39,7 @@ function WebViewWindow(tabbed_window,show_navbar,title,url) {
 		  layout:'vertical'
 		});		
 	}
+	
 	if ((ad_role < 5) && (Ti.Platform.osname!='mobileweb')){
 		view_header_gap=adgap;
 		//Admob Setting
@@ -89,6 +101,7 @@ function WebViewWindow(tabbed_window,show_navbar,title,url) {
 	//alert('mobile name:'+Ti.Platform.osname)
 	if (Ti.Platform.osname=='mobileweb'){
 		//alert('mobile')
+		// alert('checkpoint 3')
 		webview.addEventListener('load', function(e) {
 			//alert('mobile height:'+ webview.evalJS("document.height"))
 		    Ti.API.info("height:" + webview.evalJS("document.height"));
@@ -104,7 +117,7 @@ function WebViewWindow(tabbed_window,show_navbar,title,url) {
 		win.add(webview);	
 	}		
 	
-	
+	// alert('checkpoint 4')
 	if (tabbed_window && show_navbar) {
 		win.navBarHidden = false;
 	} else {
@@ -113,7 +126,9 @@ function WebViewWindow(tabbed_window,show_navbar,title,url) {
 	
 	win.addEventListener('open',function(){
 		logging('WEBPAGE', title)
-		tracker.trackEvent({ category: "WEBPAGE", action: "Open", label: title, value: 1 });
+		if (Ti.Platform.osname !='mobileweb'){
+			tracker.trackEvent({ category: "WEBPAGE", action: "Open", label: title, value: 1 });
+		}
 	})
 	
 	return win
