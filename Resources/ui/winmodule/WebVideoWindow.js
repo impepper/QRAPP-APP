@@ -1,8 +1,9 @@
 function WebVideoWindow(tabbed_window,show_navbar,title,videosource,url) {
 
 	Ti.include('/jslib/fnc_logging.js');
+	
 	var GA = require('analytics.google'); 
-	var tracker = GA.getTracker("UA-41799104-1");
+	var tracker = GA.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAppID','UA-41799104-1'));
 
 	var win = Ti.UI.createWindow({
 		title:title,
@@ -98,7 +99,7 @@ function WebVideoWindow(tabbed_window,show_navbar,title,videosource,url) {
 	}
 	win.addEventListener('open',function(){
 		logging('WEBVIDEO', title)
-		tracker.trackEvent({ category: "WEBVIDEO", action: "Open", label: title, value: 1 });
+		tracker.trackEvent({ category: Ti.App.Properties.getString('QRAppContentTitle','mCMS Content'), action: "WEBVIDEO", label: title, value: 1 });
 	})
 	return win
 };

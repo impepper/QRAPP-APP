@@ -1,7 +1,8 @@
 function WebViewWindow(tabbed_window,show_navbar,title,url) {
 	Ti.include('/jslib/fnc_logging.js');
+	
 	var GA = require('analytics.google'); 
-	var tracker = GA.getTracker("UA-41799104-1");
+	var tracker = GA.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAppID','UA-41799104-1'));
 	
 	
 	var win = Ti.UI.createWindow({
@@ -113,7 +114,7 @@ function WebViewWindow(tabbed_window,show_navbar,title,url) {
 	
 	win.addEventListener('open',function(){
 		logging('WEBPAGE', title)
-		tracker.trackEvent({ category: "WEBPAGE", action: "Open", label: title, value: 1 });
+		tracker.trackEvent({ category: Ti.App.Properties.getString('QRAppContentTitle','mCMS Content'), action: "WEBPAGE", label: title, value: 1 });
 	})
 	
 	return win

@@ -1,4 +1,6 @@
-Ti.App.Properties.setBool('local_tabs',false)
+//This file is made if no cloud windows were used. when one needs to build a ref app it is needed
+
+Ti.App.Properties.setBool('local_tabs',false)  //set to true then app will automatically load settings below
 var local_userrole = 2
 
 var defaultJSON = 

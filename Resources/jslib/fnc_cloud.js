@@ -46,6 +46,9 @@ function cloud_resetUser(){
     Ti.App.Properties.removeProperty('cloud_useremail')    
     Ti.App.Properties.removeProperty('cloud_userpassword')
     Ti.App.Properties.removeProperty('cloud_userrole')
+    Ti.App.Properties.removeProperty('QRAppContentTitle')
+    Ti.App.Properties.removeProperty('GoogleAnalyticsAppID')
     Ti.App.Properties.setBool('auto_login',false)
     Ti.App.Properties.setBool('cloud_Logged',false)	
+    
 }
