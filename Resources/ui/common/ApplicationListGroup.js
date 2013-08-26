@@ -116,9 +116,11 @@ function ApplicationListGroup(_root_win,tabbed_window,show_navbar,title,acs_win_
 				
 				Ti.App.Properties.setString('GoogleAnalyticsAppID',(e.users[0].custom_fields['content_ga'] == undefined)?'UA-41799104-1':e.users[0].custom_fields['content_ga'])
 				
-				var GA = require('analytics.google'); 
-				var tracker_master = GA.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAdminID','UA-41799104-1'));
-				tracker_master.trackEvent({ category: "QR App", action: "Title", label: cloudContentTitle, value: 1 });
+				if (Ti.Platform.osname !='mobileweb'){
+					var GA = require('analytics.google'); 
+					var tracker_master = GA.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAdminID','UA-41799104-1'));
+					tracker_master.trackEvent({ category: "QR App", action: "Title", label: cloudContentTitle, value: 1 });
+				}
 				
 				Cloud.Objects.query({
 				    classname: 'windows',

@@ -226,13 +226,13 @@ function ApplicationTabGroup(isTablet) {
 				if (cloudContentTitle == undefined){cloudContentTitle = L('_MCMSCONTENTTITLE','mCMS Content')}
 				Ti.App.Properties.setString('QRAppContentTitle',cloudContentTitle)
 				
-				Ti.App.Properties.setString('GoogleAnalyticsAppID',(e.users[0].custom_fields['content_ga'] == undefined)?'UA-41799104-1':e.users[0].custom_fields['content_ga']
+				Ti.App.Properties.setString('GoogleAnalyticsAppID',(e.users[0].custom_fields['content_ga'] == undefined)?'UA-41799104-1':e.users[0].custom_fields['content_ga'])
 				
-				
-				var GA = require('analytics.google'); 
-				var tracker_master = GA.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAdminID','UA-41799104-1'));
-				tracker_master.trackEvent({ category: "QR App", action: "Title", label: cloudContentTitle, value: 1 });
-				
+				if (Ti.Platform.osname !='mobileweb'){
+					var GA = require('analytics.google'); 
+					var tracker_master = GA.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAdminID','UA-41799104-1'));
+					tracker_master.trackEvent({ category: "QR App", action: "Title", label: cloudContentTitle, value: 1 });
+				}
 				
 				//Local defined user setting
 				var win_id_range = {"$gt":0}

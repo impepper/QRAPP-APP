@@ -1,19 +1,14 @@
 function WebViewWindow(tabbed_window,show_navbar,title,url) {
 	// alert('checkpoint 1')
 	Ti.include('/jslib/fnc_logging.js');
-<<<<<<< HEAD
-	
-	var GA = require('analytics.google'); 
-	var tracker = GA.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAppID','UA-41799104-1'));
-=======
+
 
 	if (Ti.Platform.osname !='mobileweb'){
 
 		var GA = require('analytics.google'); 
-		var tracker = GA.getTracker("UA-41799104-1");	
+		var tracker = GA.getTracker("Ti.App.Properties.getString('GoogleAnalyticsAppID','UA-41799104-1'));	
 	}
 	
->>>>>>> refs/remotes/origin/master
 	
 	
 	var win = Ti.UI.createWindow({
@@ -134,15 +129,13 @@ function WebViewWindow(tabbed_window,show_navbar,title,url) {
 	
 	win.addEventListener('open',function(){
 		logging('WEBPAGE', title)
-<<<<<<< HEAD
-		tracker.trackEvent({ category: Ti.App.Properties.getString('QRAppContentTitle','mCMS Content'), action: "WEBPAGE", label: title, value: 1 });
-=======
+
 
 		if (Ti.Platform.osname !='mobileweb'){
 
-			tracker.trackEvent({ category: "WEBPAGE", action: "Open", label: title, value: 1 });
+			tracker.trackEvent({ category: Ti.App.Properties.getString('QRAppContentTitle','mCMS Content'), action: "WEBPAGE", label: title, value: 1 });
 		}
->>>>>>> refs/remotes/origin/master
+
 	})
 	
 	return win
