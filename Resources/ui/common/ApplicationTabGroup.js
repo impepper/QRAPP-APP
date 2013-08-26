@@ -79,20 +79,25 @@ function ApplicationTabGroup(isTablet) {
 		}	
 	}
 	
-	if (Ti.App.Properties.getBool('auto_login',false)){
-	    var _login= Ti.App.Properties.getString('cloud_useremail','viewer.defaultui@fuihan.com')
-	    var _password = Ti.App.Properties.getString('cloud_userpassword','viewerInPub')	    
+	if (osname != 'mobileweb'){
+		if (Ti.App.Properties.getBool('auto_login',false)){
+		    var _login= Ti.App.Properties.getString('cloud_useremail','viewer.defaultui@fuihan.com')
+		    var _password = Ti.App.Properties.getString('cloud_userpassword','viewerInPub')	    
+		} else {
+			cloud_resetUser()   		
+		}
 	} else {
-		cloud_resetUser()   		
-	}
-
-	//necessary for mobileweb interface : getting UserID form webbrowser (Setting by POST in web)
-	if (osname=='mobileweb'){
+		//necessary for mobileweb interface : getting UserID form webbrowser (Setting by POST in web)
 		var tempappid=Ti.Utils.base64decode(Ti.App.Properties.getString('viewerid','')).toString();
 		_login='viewer.'+tempappid.toString().substr(9,200)
-		alert('user:'+_login)
-	}	
+		Ti.App.Properties.setString('cloud_useremail',_login)
+		Ti.App.Properties.setString('cloud_userpassword',_password)
+		// alert('user:'+_login)
+		// alert('Clouduser:'+Ti.App.Properties.getString('cloud_useremail','No User Set'))		
+	}
 	
+	// Ti.App.Properties.setString('cloud_useremail',_login)
+	// Ti.App.Properties.setString('cloud_userpassword',_password)
 	// future feature : Get Keys for Right ACS applications
 	// if (_login.substr(7,200) == 'defaultui@fuihan.com'){
 		// getCloudKey('0.'+_login.substr(7,200))
@@ -102,8 +107,6 @@ function ApplicationTabGroup(isTablet) {
 	
 	Ti.API.info('User:'+_login)
 	Ti.API.info('Pass:'+_password)
-	
-		
 	
 	var loadingDefaultTabs = function(tabgroupWin,startup){
 		resultTabs=[];
@@ -168,19 +171,8 @@ function ApplicationTabGroup(isTablet) {
 			self_win.addTab(tabbed_tab);	    			    
 	  	 	// self_win.activeTab=1;
 	  	 	init_stratup_tabs=2;	
-		} else {		    
-		    /// New modificaton
-		    // var tabbed_win2 = new WindowRouter('TYPE_QRGENERATOR',[true,true,L('_QRGENERATOR','QR Generator')],'')	
-			// var tabbed_tab2 = Ti.UI.createTab({
-				// titleid: '_QRGENERATOR',
-				// icon: '/icons/qrcode.png',
-				// window_type:'TYPE_QRGENERATOR',
-				// window: tabbed_win2
-			// });					
-			// self_win.addTab(tabbed_tab2);
-			// self_win.addTab(tabbed_tab);
-	  	 	// init_stratup_tabs=2;	
 		}
+		
 		// alert('self_win:'+self_win.tabs.length+'/init_stratup_tabs:'+init_stratup_tabs)
 		while (self_win.tabs.length>init_stratup_tabs){
 	    	self_win.removeTab(self_win.tabs[0])
@@ -194,6 +186,8 @@ function ApplicationTabGroup(isTablet) {
 
 		_login=Ti.App.Properties.getString('cloud_useremail','viewer.defaultui@fuihan.com')
 		_passwd=Ti.App.Properties.getString('cloud_userpassword','viewerInPub')
+		
+		// alert('Logib with Clouduser:'+Ti.App.Properties.getString('cloud_useremail','No User Set'))
 		
 		Ti.API.info('User2:'+_login)
 		Ti.API.info('Pass2:'+_password)
@@ -210,6 +204,7 @@ function ApplicationTabGroup(isTablet) {
 		    password: _passwd    
 		}, function (e) {
 			if (e.success) {
+				// alert('Logged: '+e.users[0].username)
 				var user = e.users[0]				
 				//Step 1 - Login Success, Start  Querying modules
 				Ti.App.Properties.setBool('cloud_Logged',true)		
@@ -264,9 +259,14 @@ function ApplicationTabGroup(isTablet) {
 						resultTabs=[];
 				        var WindowRouter = require('ui/winmodule/WindowRouter');	
 				        var tabIndex=0;
+				        // alert('Windows : '+e.windows.length)
 			            for (var i=0;i<e.windows.length;i++){
+			            	
 				            var windows = e.windows[i]
+				            
+				            // alert('Step 2+ - Qureying Results Received : Window '+ i +' Type - '+windows.win_type);
 				            Ti.API.info('Step 2+ - Qureying Results Received : Window '+ i +' Type - '+windows.win_type);
+				            
 							//check if the window is ready for public
 							Ti.API.info('ACL [win_published]:'+windows.win_published)
 							if (((typeof (windows.win_published) == 'undefined') || (windows.win_published)) 
@@ -314,7 +314,7 @@ function ApplicationTabGroup(isTablet) {
 													
 										break;
 								}
-
+								// alert('checkpoint a')
 								var winicon = (windows.win_icon)?windows.win_icon:'about'					
 								var tabbed_tab = Ti.UI.createTab({
 									title: windows.win_title,
@@ -325,13 +325,14 @@ function ApplicationTabGroup(isTablet) {
 								if ((Ti.Platform.osname == 'android') && (windows.win_type=='TYPE_QRACCOUNT')){
 									tabbed_tab.titleid='_MCMS'
 								}
-
-								tabbed_tab.icon = (Ti.Platform.osname=='mobileweb')?'http://code.qrapp.com.tw/mobileWeb/icons/'+winicon+'.png':'/icons/'+winicon+'.png'
+								
+								// alert('checkpoint b')
+								tabbed_tab.icon = (Ti.Platform.osname=='mobileweb')?'icons/'+winicon+'.png':'/icons/'+winicon+'.png'
 								
 								//making every windows capable to reload tabs from new QR App
 								tabbed_win.containingTab = tabbed_tab;
 								tabbed_win._tabcount = e.windows.length;
-								
+								// alert('checkpoint c')
 								// Making Functions to reload tabs
 								tabbed_win.addEventListener('ReloadTabs',function(){
 									func_ReloadTabs(self_win,tabgroupWin,loadingTabs)
@@ -359,7 +360,7 @@ function ApplicationTabGroup(isTablet) {
 																	
 				            	resultTabs[tabIndex]=tabbed_tab;
 				            	tabIndex ++;
-
+								// alert('checkpoint d')
 							}
 			            }
 			            
@@ -397,6 +398,7 @@ function ApplicationTabGroup(isTablet) {
 				    		alert(L('_ERR_GETTINGCONTENT','Sorry, Failed in getting Contents withi your account, Please check your content managements.')) 
 				    		loadingDefaultTabs(self_win,true)  
 				    	} else {
+				    		// alert('LoadingMethod error?')
 							var ApplicationListGroup = require('ui/common/ApplicationListGroup');
 							app_list_win = new ApplicationListGroup(tabgroupWin,true,true,L('_QRCONTENT','QR Content'),'');
 							Ti.App.Properties.setBool('auto_login',false)
@@ -456,7 +458,7 @@ function ApplicationTabGroup(isTablet) {
 					tabbed_tab.titleid='_MCMS'
 				}
 
-				tabbed_tab.icon = (Ti.Platform.osname=='mobileweb')?'http://code.qrapp.com.tw/mobileWeb/icons/'+winicon+'.png':'/icons/'+winicon+'.png'
+				tabbed_tab.icon = (Ti.Platform.osname=='mobileweb')?'icons/'+winicon+'.png':'/icons/'+winicon+'.png'
 				
 				//making every windows capable to reload tabs from new QR App
 				tabbed_win.containingTab = tabbed_tab;
@@ -485,24 +487,30 @@ function ApplicationTabGroup(isTablet) {
 
 	
 	//--------before user login - very first launch
-	//--------Check if using local Conf
+	
 	var localTabs = false
-	var tmp_conffile = Ti.Filesystem.getFile('conf/default.json')
-	if(tmp_conffile.exists()){
-		Ti.API.info('Got Conf File')
-		Ti.include('conf/default.json')
+	var defaultTabs = false
+	
+	if (osname !='mobileweb'){
+		//--------Check if using local Conf
+		
+		var tmp_conffile = Ti.Filesystem.getFile('conf/default.json')
+		if(tmp_conffile.exists()){
+			Ti.API.info('Got Conf File')
+			Ti.include('conf/default.json')
+		}
+	
+		// --- Check if Network is available
+		// --- If not, Loading Default QR Tabs
+		
+		if (Ti.Network.networkTypeName == 'NONE'){
+			Ti.API.info('currently out of networking sertvice - load default local data')
+			defaultTabs = true
+		}		
 	}
 
-	// --- Check if Network is available
-	// --- If not, Loading Default QR Tabs
-	var defaultTabs = false
-	if (Ti.Network.networkTypeName == 'NONE'){
-		Ti.API.info('currently out of networking sertvice - load default local data')
-		defaultTabs = true
-	}
-	
 	//Set Property on Loading Local Conf Tabs  ---   Boolean 
-	var localTabs = Ti.App.Properties.getBool('local_tabs',false)
+	localTabs = Ti.App.Properties.getBool('local_tabs',false)
 	
 	if (defaultTabs){	
 		// No network, loading default QR tabs		
@@ -523,11 +531,11 @@ function ApplicationTabGroup(isTablet) {
 			// //if (((Ti.App.Properties.getString('loading_method','TAB')=='TAB') && (Ti.App.Properties.getString('cloud_useremail','') !='')) 
 			if (((Ti.App.Properties.getString('loading_method','TAB')=='TAB') && (Ti.App.Properties.getBool('auto_login',false)))
 					|| (Ti.Platform.osname=='mobileweb')){
-				if (Ti.Platform.osname=='mobileweb'){
-					var tempappid=Ti.Utils.base64decode(Ti.App.Properties.getString('viewerid','')).toString();
-					_login='viewer.'+tempappid.toString().substr(9,200)
-					_passwd='viewerInPub'	
-				}
+				// if (Ti.Platform.osname=='mobileweb'){
+					// var tempappid=Ti.Utils.base64decode(Ti.App.Properties.getString('viewerid','')).toString();
+					// _login='viewer.'+tempappid.toString().substr(9,200)
+					// _passwd='viewerInPub'	
+				// }
 				loadingTabs(self_win,true);					
 			} else {
 				// alert('start loadingDefaultTabs')		

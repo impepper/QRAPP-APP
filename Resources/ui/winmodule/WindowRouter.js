@@ -1,4 +1,5 @@
 function WindowRouter(win_type,parameters,win_id,_rootWin) {
+	// alert('cp : 1')
 	if (_rootWin== undefined){_rootWin=''}
 	var self = Ti.UI.createWindow({
 		backgroundColor:'red'
@@ -20,9 +21,11 @@ function WindowRouter(win_type,parameters,win_id,_rootWin) {
 			self = new ImageViewWindow(parameters[0],parameters[1],parameters[2],win_id,true);
 			break;
 		case 'TYPE_WEB':
+			// alert('cp : 2a')
 			var WebViewWindow = require('ui/winmodule/WebViewWindow');
 			// self = new WebViewWindow(true,true,'Test','http://tw.yahoo.com');
 			self = new WebViewWindow(parameters[0],parameters[1],parameters[2],parameters[3]);
+			// alert('cp : 2b')
 			break;
 		case 'TYPE_CUSTOMPAGE':
 			var WebViewWindow = require('ui/winmodule/CustomPageWindow');
@@ -136,7 +139,7 @@ function WindowRouter(win_type,parameters,win_id,_rootWin) {
 			self = new WebViewWindow(true,true,'Welcome','default.html');
 			break;		
 	}
-	
+	// alert('cp : 3')
 	return self;
 };
 
