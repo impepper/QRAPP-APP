@@ -1,7 +1,11 @@
-function ApplicationTabGroup(isTablet) {
+function ApplicationTabGroup(isTablet,GA_Master) {
 	// alert('create TABs')
 	Ti.include('jslib/fnc_cloud.js');
-	
+	// var GA_Master
+	var tracker_master
+	if (Ti.Platform.osname !='mobileweb'){
+		// tracker_master = GA_Master.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAdminID','UA-41799104-1'));
+	}
 	var init_stratup_tabs=0;
 	
 	Ti.API.info('Create Tabgroup')
@@ -114,7 +118,7 @@ function ApplicationTabGroup(isTablet) {
 		//create first TAb : QR Code Scanner
 	    var WindowRouter = require('ui/winmodule/WindowRouter');
     	if (Ti.Platform.osname=='mobileweb'){
-    		var tabbed_win = new WindowRouter('TYPE_WIN',[true,true,L('_WELCOMEMCMS','Welcome to mCMS'),''],'');
+    		var tabbed_win = new WindowRouter('TYPE_WIN',[true,true,L('_WELCOMEMCMS','Welcome to mCMS'),''],'','');
 			var tabbed_tab = Ti.UI.createTab({
 				titleid: '_WELCOMEMCMS',
 				icon: '/icons/info.png',
@@ -123,7 +127,7 @@ function ApplicationTabGroup(isTablet) {
 			});
     	} else {
 
-			var tabbed_win = new WindowRouter('TYPE_QRACCOUNT',[L('_SCANURQR','Scan Your QR Codes')],'',tabgroupWin);
+			var tabbed_win = new WindowRouter('TYPE_QRACCOUNT',[L('_SCANURQR','Scan Your QR Codes')],'',tabgroupWin,tracker_master);
 			
 			var tabbed_tab = Ti.UI.createTab({
 				titleid: '_SCANURQR',
@@ -159,7 +163,7 @@ function ApplicationTabGroup(isTablet) {
 	    // especially for mobile platform -- creat extra two tabs
 		if (Ti.Platform.name != 'mobileweb' ){
 			//create QR Generator Tab
-    		var tabbed_win2 = new WindowRouter('TYPE_QRGENERATOR',[true,true,L('_QRGENERATOR','QR Generator')],'')	
+    		var tabbed_win2 = new WindowRouter('TYPE_QRGENERATOR',[true,true,L('_QRGENERATOR','QR Generator')],'','',tracker_master)	
 			var tabbed_tab2 = Ti.UI.createTab({
 				titleid: '_QRGENERATOR',
 				icon: '/icons/qrcode.png',
@@ -229,8 +233,8 @@ function ApplicationTabGroup(isTablet) {
 				Ti.App.Properties.setString('GoogleAnalyticsAppID',(e.users[0].custom_fields['content_ga'] == undefined)?'UA-41799104-1':e.users[0].custom_fields['content_ga'])
 				
 				if (Ti.Platform.osname !='mobileweb'){
-					var GA = require('analytics.google'); 
-					var tracker_master = GA.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAdminID','UA-41799104-1'));
+					// var GA_Master = require('analytics.google'); 
+					tracker_master = GA_Master.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAppID','UA-41799104-1'));
 					tracker_master.trackEvent({ category: "QR App", action: "Title", label: cloudContentTitle, value: 1 });
 				}
 				
@@ -280,7 +284,7 @@ function ApplicationTabGroup(isTablet) {
 										win_parameters.push(windows.win_parameters[2])
 										win_parameters.push(windows.win_id);
 										win_parameters.push(0);
-										var tabbed_win = new WindowRouter(windows.win_type,win_parameters,windows.id);							
+										var tabbed_win = new WindowRouter(windows.win_type,win_parameters,windows.id,'',tracker_master);							
 										break;
 									case 'TYPE_QRACCOUNT':
 										var tabbed_win = new WindowRouter(windows.win_type,windows.win_parameters,windows.id,tabgroupWin);
@@ -310,7 +314,7 @@ function ApplicationTabGroup(isTablet) {
 																				
 										break;
 									default:
-										var tabbed_win = new WindowRouter(windows.win_type,windows.win_parameters,windows.id);
+										var tabbed_win = new WindowRouter(windows.win_type,windows.win_parameters,windows.id,'',tracker_master);
 													
 										break;
 								}
@@ -440,10 +444,10 @@ function ApplicationTabGroup(isTablet) {
 						win_parameters.push(windows.win_parameters[2])
 						win_parameters.push(windows.win_id);
 						win_parameters.push(0);
-						var tabbed_win = new WindowRouter(windows.win_type,win_parameters,windows.id);							
+						var tabbed_win = new WindowRouter(windows.win_type,win_parameters,windows.id,'',tracker_master);							
 						break;
 					default:
-						var tabbed_win = new WindowRouter(windows.win_type,windows.win_parameters,windows.id);
+						var tabbed_win = new WindowRouter(windows.win_type,windows.win_parameters,windows.id,'',tracker_master);
 						break;
 				}
 

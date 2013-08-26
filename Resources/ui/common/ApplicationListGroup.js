@@ -1,6 +1,12 @@
-function ApplicationListGroup(_root_win,tabbed_window,show_navbar,title,acs_win_id,acs_table_root_id) {
+function ApplicationListGroup(_root_win,tabbed_window,show_navbar,title,acs_win_id,acs_table_root_id,GA_Master) {
 	Ti.include('/jslib/fnc_logging.js');
 	Ti.include('/stylelib/style_01.js');
+	
+	var tracker_master
+	if (Ti.Platform.osname !='mobileweb'){
+		tracker_master = GA_Master.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAdminID','UA-41799104-1'));
+	}
+	
 	var win = Ti.UI.createWindow({
 		title:title,
 		// backgroundColor:'white',
@@ -69,7 +75,7 @@ function ApplicationListGroup(_root_win,tabbed_window,show_navbar,title,acs_win_
 		
 		var WindowRouter = require('ui/winmodule/WindowRouter');
 		// alert('Item Clicked:'+e.rowData.targetWindow+'  /  '+e.rowData.targetWindowId)
-		var routedWindow = new WindowRouter(e.rowData.targetWindow,e.rowData.targetWindowParameters,e.rowData.targetWindowId);		
+		var routedWindow = new WindowRouter(e.rowData.targetWindow,e.rowData.targetWindowParameters,e.rowData.targetWindowId,'',tracker_master);		
 		routedWindow.containingTab=_root_win.containingTab;		
 		_root_win.containingTab.open(routedWindow);
 	});
@@ -117,9 +123,9 @@ function ApplicationListGroup(_root_win,tabbed_window,show_navbar,title,acs_win_
 				Ti.App.Properties.setString('GoogleAnalyticsAppID',(e.users[0].custom_fields['content_ga'] == undefined)?'UA-41799104-1':e.users[0].custom_fields['content_ga'])
 				
 				if (Ti.Platform.osname !='mobileweb'){
-					var GA = require('analytics.google'); 
-					var tracker_master = GA.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAdminID','UA-41799104-1'));
-					tracker_master.trackEvent({ category: "QR App", action: "Title", label: cloudContentTitle, value: 1 });
+					// var GA = require('analytics.google'); 
+					tracker_master = GA.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAppID','UA-41799104-1'));
+					// tracker_master.trackEvent({ category: "QR App", action: "Title", label: cloudContentTitle, value: 1 });
 				}
 				
 				Cloud.Objects.query({

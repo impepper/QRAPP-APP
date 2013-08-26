@@ -4,6 +4,13 @@ if (Ti.version < 1.8 ) {
 }
 
 if (Ti.Platform.osname != 'mobileweb'){
+
+	// if (Ti.Platform.osname !='mobileweb'){
+		GA_Master = require('analytics.google'); 
+		// var tracker_master = GA_Master.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAdminID','UA-41799104-1'));
+				// // tracker_master.trackEvent({ category: "QR App", action: "Title", label: cloudContentTitle, value: 1 });
+	// }
+
 	
 	if (Ti.Filesystem.getFile('/conf/defaultaccount.js')){
 		Ti.include('/conf/defaultaccount.js');
@@ -36,6 +43,13 @@ if (Ti.Platform.osname != 'mobileweb'){
 // Ti.App.Properties.setString('loading_method','TAB');
 
 (function() {
+	var GA_Master
+	if (Ti.Platform.osname !='mobileweb'){
+		GA_Master = require('analytics.google'); 
+		// var tracker_master = GA_Master.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAdminID','UA-41799104-1'));
+				// // tracker_master.trackEvent({ category: "QR App", action: "Title", label: cloudContentTitle, value: 1 });
+	}
+
 
 	var osname = Ti.Platform.osname,
 		version = Ti.Platform.version,
@@ -45,6 +59,6 @@ if (Ti.Platform.osname != 'mobileweb'){
 	var isTablet = osname === 'ipad' || (osname === 'android' && (width > 899 || height > 899));
 
 	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
-	new ApplicationTabGroup(isTablet).open();
+	new ApplicationTabGroup(isTablet,GA_Master).open();
 
 })();

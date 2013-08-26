@@ -4,8 +4,8 @@ function WebVideoWindow(tabbed_window,show_navbar,title,videosource,url) {
 
 	if (Ti.Platform.osname !='mobileweb'){
 
-		var GA = require('analytics.google'); 
-		var tracker = GA.getTracker(Ti.App.Properties.getString('GoogleAnalyticsAppID','UA-41799104-1'));
+		// var GA_App = require('analytics.google'); 
+		// var tracker_App = GA_App.getTracker('UA-41799104-1');
 	}
 	
 	var win = Ti.UI.createWindow({
@@ -100,15 +100,16 @@ function WebVideoWindow(tabbed_window,show_navbar,title,videosource,url) {
 	} else {
 		win.navBarHidden = true;
 	}
-	win.addEventListener('open',function(){
-		logging('WEBVIDEO', title)
-
-		if (Ti.Platform.osname !='mobileweb'){
-
-			tracker.trackEvent({ category: Ti.App.Properties.getString('QRAppContentTitle','mCMS Content'), action: "WEBVIDEO", label: title, value: 1 });
-		}
-
-	})
+	// win.addEventListener('open',function(){
+		// logging('WEBVIDEO', title)
+// 
+		// if (Ti.Platform.osname !='mobileweb'){
+			// // tracker_App.trackEvent({ category: "QR App", action: "Title", label: 'Test', value: 1 });
+// 			
+			// // tracker.trackEvent({ category: Ti.App.Properties.getString('QRAppContentTitle','mCMS Content'), action: "WEBVIDEO", label: title, value: 1 });
+		// }
+// 
+	// })
 	return win
 };
 

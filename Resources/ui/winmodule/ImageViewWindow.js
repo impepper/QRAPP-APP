@@ -208,7 +208,7 @@ function ImageViewWindow(tabbed_window,show_navbar,title,win_id,coverflow_view) 
 	} else {
 		win.navBarHidden = true;
 	}
-	win.addEventListener('open',function(){logging('IMAGEVIEW', title)})
+	// win.addEventListener('open',function(){logging('IMAGEVIEW', title)})
 	return win
 };
 

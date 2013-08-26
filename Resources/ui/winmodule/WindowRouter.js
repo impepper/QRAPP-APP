@@ -1,10 +1,10 @@
-function WindowRouter(win_type,parameters,win_id,_rootWin) {
+function WindowRouter(win_type,parameters,win_id,_rootWin,GA_Tracker) {
 	// alert('cp : 1')
 	if (_rootWin== undefined){_rootWin=''}
 	var self = Ti.UI.createWindow({
 		backgroundColor:'red'
 	});
-	
+	var title = 'Default'
 	switch (win_type) {
 		// case 'TYPE_LISTGROUP':
 			// var ApplicationListGroup = require('ui/common/ApplicationListGroup');
@@ -14,28 +14,33 @@ function WindowRouter(win_type,parameters,win_id,_rootWin) {
 			var ImageViewWindow = require('ui/winmodule/ImageViewWindow');
 			// self = new ImageViewWindow(true,true,'Test','http://graffletopia.com/images/previews/872/thumb.png?1334680174',false);
 			self = new ImageViewWindow(parameters[0],parameters[1],parameters[2],win_id,false);
+			title = parameters[2]
 			break;
 		case 'TYPE_COVERFLOW':
 			var ImageViewWindow = require('ui/winmodule/ImageViewWindow');
 			// self = new ImageViewWindow(true,true,'Test','http://graffletopia.com/images/previews/872/thumb.png?1334680174',true);
 			self = new ImageViewWindow(parameters[0],parameters[1],parameters[2],win_id,true);
+			title = parameters[2]
 			break;
 		case 'TYPE_WEB':
 			// alert('cp : 2a')
 			var WebViewWindow = require('ui/winmodule/WebViewWindow');
 			// self = new WebViewWindow(true,true,'Test','http://tw.yahoo.com');
 			self = new WebViewWindow(parameters[0],parameters[1],parameters[2],parameters[3]);
+			title = parameters[2]
 			// alert('cp : 2b')
 			break;
 		case 'TYPE_CUSTOMPAGE':
 			var WebViewWindow = require('ui/winmodule/CustomPageWindow');
 			// self = new WebViewWindow(true,true,'Page Title','Page Content');
 			self = new WebViewWindow(parameters[0],parameters[1],parameters[2],parameters[3]);
+			title = parameters[2]
 			break;			
 		case 'TYPE_WEBVIDEO':
 			var WebVideoWindow = require('ui/winmodule/WebVideoWindow');
 			// self = new WebVideoWindow(true,true,'Sample Video','YOUTUBE','511XK1L-Btg');
 			self = new WebVideoWindow(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4]);
+			title = parameters[2]
 			break;				
 		// case 'TYPE_CONTACT':
 			// var ContactWindow = require('ui/winmodule/ContactWindow');
@@ -46,21 +51,25 @@ function WindowRouter(win_type,parameters,win_id,_rootWin) {
 			var ContactWindow = require('ui/winmodule/ContactWindow');
 			//self = new ContactWindow(true,true,'Contact','photo_id');
 			self = new ContactWindow(parameters[0],parameters[1],parameters[2],parameters[3]);
+			title = parameters[2]
 			break;				
 		case 'TYPE_TABLE':
 			var TableViewWindow = require('ui/winmodule/TableViewWindow');
 			// self = new TableViewWindow(true,false,'Table View',tableview_rowdata);
-			self = new TableViewWindow(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4]);
+			self = new TableViewWindow(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4],'',GA_Tracker);
+			title = parameters[2]
 			break;				
 		case 'TYPE_RSS':
 			var RSSWindow = require('ui/winmodule/RSSWindow');
 			// self = new TableViewWindow(true,false,'RSS Title',rssurl);
 			self = new RSSWindow(parameters[0],parameters[1],parameters[2],parameters[3]);
+			title = parameters[2]
 			break;	
 		case 'TYPE_RSS2':
 			var RSSWindow2 = require('ui/winmodule/RSSWindow2');
 			// self = new TableViewWindow(true,false,'RSS Title',rssurl);
 			self = new RSSWindow2(parameters[0],parameters[1],parameters[2],parameters[3]);
+			title = parameters[2]
 			break;			
 		case 'TYPE_ACCOUNT':
 			var AccountWindow = require('ui/winmodule/AccountWindow');
@@ -140,6 +149,18 @@ function WindowRouter(win_type,parameters,win_id,_rootWin) {
 			break;		
 	}
 	// alert('cp : 3')
+	
+	self.addEventListener('open',function(){
+		
+		logging(win_type, title)
+		if ((Ti.Platform.osname !='mobileweb') && (GA_Tracker != '') && (GA_Tracker != undefined)){
+			// var tracker_App = GA.getTracker('UA-41799104-1');
+			// tracker_App.trackEvent({ category: "QR App", action: "Title", label: 'Test', value: 1 });
+			GA_Tracker.trackEvent({ category: "QR App", action: win_type, label: title, value: 1 });
+		}
+	})
+	
+	
 	return self;
 };
 

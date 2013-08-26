@@ -92,9 +92,9 @@ function CustomPageWindow(tabbed_window,show_navbar,title,pagecontent) {
 	} else {
 		win.navBarHidden = true;
 	}
-	win.addEventListener('open',function(){
-		logging('HTMLPAGE', title)
-	});	
+	// win.addEventListener('open',function(){
+		// logging('HTMLPAGE', title)
+	// });	
 	return win
 };
 

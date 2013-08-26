@@ -132,7 +132,7 @@ function RSSWindow2(tabbed_window,show_navbar,title,rssurl) {
 		}
 	};
 	xhr.send();
-	win.addEventListener('open',function(){logging('RSS2', title)})
+	// win.addEventListener('open',function(){logging('RSS2', title)})
 	return win
 };
 

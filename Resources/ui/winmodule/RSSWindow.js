@@ -266,7 +266,7 @@ function RSSWindow(tabbed_window,show_navbar,title,rssurl) {
 	// load the feed
 	loadRSSFeed(url);
 	
-	win.addEventListener('open',function(){logging('RSS', title)})
+	// win.addEventListener('open',function(){logging('RSS', title)})
 	return win
 };
 

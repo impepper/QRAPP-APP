@@ -207,7 +207,7 @@ function ContactWindow(tabbed_window,show_navbar,title,avatarid) {
 	} else {
 		win.navBarHidden = true;
 	}
-	win.addEventListener('open',function(){logging('CONTACT', title)});
+	// win.addEventListener('open',function(){logging('CONTACT', title)});
 	return win
 };
 
